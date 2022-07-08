@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import { PNG } from 'pngjs'
-import { writeImage } from './tgaWriter'
+import { writeImage, writeImageIndexed } from './tgaWriter'
 
 
 fs.createReadStream("test.png")
@@ -9,9 +9,9 @@ fs.createReadStream("test.png")
   )
   .on("parsed", function () {
 
-    const buffer = writeImage(this.data, this.width, this.height)
+    const buffer = writeImageIndexed(this.data, this.width, this.height)
     fs.writeFileSync('test.tga', new Uint8Array(buffer))
-    
+
   });
 
 
