@@ -1,4 +1,17 @@
-#!/usr/bin/env node
+import * as fs from 'fs';
+import { PNG } from 'pngjs'
 import { writeImage } from './tgaWriter'
-writeImage(null, 0, 0)
-console.log( "Hello!" );
+
+
+fs.createReadStream("test.png")
+  .pipe(
+    new PNG()
+  )
+  .on("parsed", function () {
+
+    const buffer = writeImage(this.data, this.width, this.height)
+    fs.writeFileSync('test.tga', new Uint8Array(buffer))
+    
+  });
+
+
