@@ -1,0 +1,19 @@
+{
+  "name": "wfwtools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "babel-node src/index.js"
+  },
+  "author": "Flore",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.18.6",
+    "@babel/core": "^7.18.6",
+    "@babel/node": "^7.18.6",
+    "@babel/preset-env": "^7.18.6",
+    "jest": "^28.1.2"
+  }
+}
