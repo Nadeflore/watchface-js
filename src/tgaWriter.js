@@ -7,8 +7,10 @@ const HEADER_SIZE = 64
  * @param {number} height 
  * @returns {ArrayBuffer} The resulting bitmap file data
  */
-export function writeImage(pixels, width, height) {
-	const bitsPerPixel = 16
+export function writeImage(pixels, width, height, bitsPerPixel = 16) {
+	if (bitsPerPixel % 8 != 0 || bitsPerPixel > 32) {
+		throw "Invalid bitPerPixel"
+	}
 	const bytePerPixel = bitsPerPixel / 8
 
 	// Size needed for this image
@@ -38,14 +40,21 @@ export function writeImage(pixels, width, height) {
 		const red = pixels[i * 4]
 		const green = pixels[i * 4 + 1]
 		const blue = pixels[i * 4 + 2]
+		const alpha = pixels[i * 4 + 3]
 
-		// color is 16bit (5:6:5) bgr
-		let rgb = 0
-		rgb |= (red & 0xF8) << 8
-		rgb |= (green & 0xFC) << 3
-		rgb |= (blue & 0xF8) >> 3
+		if (bitsPerPixel == 16) {
+			// color is 16bit (5:6:5) rgb
+			let rgba = 0
+			rgba |= (red & 0xF8) << 8
+			rgba |= (green & 0xFC) << 3
+			rgba |= (blue & 0xF8) >> 3
 
-		dataView.setUint16(HEADER_SIZE + i * bytePerPixel, rgb, true)
+			dataView.setUint16(HEADER_SIZE + i * bytePerPixel, rgba, true)
+
+		} else if (bitsPerPixel == 32) {
+			const rgba = (alpha | red << 8 | green << 16 | blue << 24) >>> 0
+			dataView.setUint32(HEADER_SIZE + i * bytePerPixel, rgba)
+		}
 	}
 
 	return dataView.buffer
@@ -102,14 +111,14 @@ export function writeImageIndexed(pixels, width, height) {
 		for (let i = 0; i < colorMapUsedColors; i++) {
 			if (dataView.getUint32(HEADER_SIZE + i * 4) == color) {
 				foundColorIndex = i
-				console.log("Using existing color " + i)
+				// console.log("Using existing color " + i)
 				break
 			}
 		}
 
 		if (foundColorIndex == null) {
 			// Color not found, add new one
-			console.log("Add new color " + color.toString(16))
+			// console.log("Add new color " + color.toString(16))
 			dataView.setUint32(HEADER_SIZE + colorMapUsedColors * 4, color)
 			foundColorIndex = colorMapUsedColors
 			colorMapUsedColors++
