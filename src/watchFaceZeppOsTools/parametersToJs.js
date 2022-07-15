@@ -89,6 +89,50 @@ export function convertParametersToJavascript(parameters) {
         updateCalls += "updateWeather();"
     }
 
+    const stepsProgressLine = parameters.StepsProgress?.LineScale
+    if (stepsProgressLine) {
+        result.push(createProgress(stepsProgressLine, "STEP"))
+    }
+
+    const heartProgressLine = parameters.HeartProgress?.LineScale
+    if (heartProgressLine) {
+        result.push(createProgress(heartProgressLine, "HEART"))
+    }
+
+    const caloriesProgressLine = parameters.CaloriesProgress?.LineScale
+    if (caloriesProgressLine) {
+        result.push(createProgress(caloriesProgressLine, "CAL"))
+    }
+
+    const doNotDisturb = parameters.Status?.DoNotDisturb
+    if (doNotDisturb) {
+        const coordinates = doNotDisturb.Coordinates
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${coordinates.X},y:${coordinates.Y},src: 'images/${doNotDisturb.OnImageIndex}.png',type:hmUI.system_status.DISTURB,show_level:hmUI.show_level.ONLY_NORMAL})`)
+    }
+
+    const lock = parameters.Status?.Lock
+    if (lock) {
+        const coordinates = lock.Coordinates
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${coordinates.X},y:${coordinates.Y},src: 'images/${lock.OffImageIndex}.png',type:hmUI.system_status.LOCK,show_level:hmUI.show_level.ONLY_NORMAL})`)
+    }
+
+    const bluetooth = parameters.Status?.Bluetooth
+    if (bluetooth) {
+        const coordinates = bluetooth.Coordinates
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${coordinates.X},y:${coordinates.Y},src: 'images/${bluetooth.OffImageIndex}.png',type:hmUI.system_status.DISCONNECT,show_level:hmUI.show_level.ONLY_NORMAL})`)
+    }
+
+    const batteryText = parameters.Battery?.BatteryText
+    if (batteryText) {
+        result.push(createNumber(batteryText, "BATTERY"))
+    }
+
+    const batteryIcon = parameters.Battery?.BatteryIcon
+    if (batteryIcon) {
+        result.push(createProgress(batteryIcon, "BATTERY"))
+    }
+
+
     if (updateCalls) {
         result.push(updateCalls)
         result.push(`hmUI.createWidget(hmUI.widget.WIDGET_DELEGATE, { resume_call: (function () {${updateCalls} }) })`)
@@ -96,6 +140,10 @@ export function convertParametersToJavascript(parameters) {
     }
 
     return result.join("\n")
+}
+
+function createProgress(progress, type) {
+    return `hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:${progress.X},y:${progress.Y},image_array:${createFontArray(progress)},image_length:${progress.ImagesCount},type:hmUI.data_type.${type},show_level:hmUI.show_level.ONLY_NORMAL})`
 }
 
 function createNumber(param, type) {
@@ -133,8 +181,7 @@ function createNumber(param, type) {
         optionalParams += `, w: ${w}`
     }
 
-    return `hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: ${x}, y: ${number.TopLeftY}, h_space: ${number.SpacingX}, font_array: ${createFontArray(number)}, align_h: ${alignment}${optionalParams}, show_level: hmUI.show_level.ONLY_NORMAL
-})`
+    return `hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: ${x}, y: ${number.TopLeftY}, h_space: ${number.SpacingX}, font_array: ${createFontArray(number)}, align_h: ${alignment}${optionalParams}, show_level: hmUI.show_level.ONLY_NORMAL})`
 }
 
 function createFontArray(font) {
