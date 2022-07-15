@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "convert2tga": "babel-node src/convertPngToTga.js",
-    "convertBand6To7": "babel-node src/convertBand6To7.js firewatch.bin"
+    "convertBand6To7": "babel-node src/convertBand6To7.js"
   },
   "author": "Flore",
   "license": "GPL",

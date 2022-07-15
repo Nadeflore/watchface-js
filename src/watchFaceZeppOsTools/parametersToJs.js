@@ -223,7 +223,7 @@ function getAlignHAndPosition(number) {
         case "Center":
             const center = (number.TopLeftX + number.BottomRightX) / 2
             const halfWidth = Math.min(center, 152 - center)
-            return { alignment: "hmUI.align.CENTER_H", x: center - halfWidth, w: center + halfWidth }
+            return { alignment: "hmUI.align.CENTER_H", x: center - halfWidth, w: 2 * halfWidth }
 
         case "Left":
         case "TopLeft":
