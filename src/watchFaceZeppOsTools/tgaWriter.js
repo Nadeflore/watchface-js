@@ -4,11 +4,12 @@ const HEADER_SIZE = 64
  * 
  * @param {Uint8ClampedArray} pixels Pixels data in rgba format
  * @param {number} width 
- * @param {number} height 
- * @returns {ArrayBuffer} The resulting bitmap file data
+ * @param {number} height
+ * @param {number} bitsPerPixel
+ * @returns {ArrayBuffer} The resulting tga file data
  */
 export function writeImage(pixels, width, height, bitsPerPixel = 16) {
-	if (bitsPerPixel % 8 != 0 || bitsPerPixel > 32) {
+	if (bitsPerPixel != 16 && bitsPerPixel != 32) {
 		throw "Invalid bitPerPixel"
 	}
 	const bytePerPixel = bitsPerPixel / 8
@@ -65,7 +66,7 @@ export function writeImage(pixels, width, height, bitsPerPixel = 16) {
 * @param {Uint8ClampedArray} pixels Pixels data in rgba format
 * @param {number} width 
 * @param {number} height 
-* @returns {ArrayBuffer} The resulting bitmap file data
+* @returns {ArrayBuffer} The resulting tga file data
 */
 export function writeImageIndexed(pixels, width, height) {
 	const bitsPerPixel = 8
@@ -131,4 +132,36 @@ export function writeImageIndexed(pixels, width, height) {
 	}
 
 	return dataView.buffer
+}
+
+/**
+ * Choose the best tga format for the given image
+ * @param {Uint8ClampedArray} pixels Pixels data in rgba format
+ * @param {number} width 
+ * @param {number} height
+ * @returns {ArrayBuffer} The resulting tga file data
+ */
+export function writeImageAutoDetectBestFormat(pixels, width, height) {
+
+	// Try to write indexed color images
+	try {
+		return writeImageIndexed(pixels, width, height)
+	} catch (e) {
+	}
+
+	return writeImage(pixels, width, height, hasAlphaChannel(pixels) ? 32 : 16)
+}
+
+/**
+ * Return whether at least one pixel is transparent
+ * @param {Uint8ClampedArray} pixels 
+ */
+function hasAlphaChannel(pixels) {
+	for (let i = 0; i < pixels.length / 4; i++) {
+		const alpha = pixels[i * 4 + 3]
+		if (alpha != 0xFF) {
+			return true
+		}
+	}
+	return false
 }

@@ -1,7 +1,7 @@
 import { info } from 'console';
 import * as fs from 'fs';
 import { PNG } from 'pngjs'
-import { writeImage, writeImageIndexed } from './tgaWriter'
+import { writeImage, writeImageIndexed } from './watchFaceZeppOsTools/tgaWriter'
 
 const OUTFILE = "output.tga"
 
