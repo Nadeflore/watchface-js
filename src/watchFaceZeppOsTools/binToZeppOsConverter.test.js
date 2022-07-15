@@ -43,7 +43,8 @@ const expectedWatchfaceIndexFile = `try {
       const logger = DeviceRuntimeCore.HmLogger.getLogger("sanjiao");
       __$$module$$__.module = DeviceRuntimeCore.Page({
         init_view() {
-            hmUI.createWidget(hmUI.widget.IMG, {x: 0, y: 0, src: "images/0.png", show_level: hmUI.show_level.ONLY_NORMAL});
+            hmUI.createWidget(hmUI.widget.IMG, {x: 20, y: 0, src: "images/0.png", show_level: hmUI.show_level.ONLY_NORMAL});
+            hmUI.createWidget(hmUI.widget.IMG, {x: 20, y: 0, src: "images/mask.png", show_level: hmUI.show_level.ONLY_NORMAL});
         },
         onInit() {
           console.log("index page.js on init invoke");

@@ -1,12 +1,15 @@
 
-export function convertParametersToJavascript(parameters) {
+let xOffset
+
+export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
+    xOffset = xOffsetParam
     const result = []
 
     let updateCalls = ""
 
     const backgroundImage = parameters.Background?.Image
     if (backgroundImage) {
-        result.push(`hmUI.createWidget(hmUI.widget.IMG, {x: ${backgroundImage.X}, y: ${backgroundImage.Y}, src: "images/${backgroundImage.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL});`)
+        result.push(`hmUI.createWidget(hmUI.widget.IMG, {x: ${backgroundImage.X + xOffset}, y: ${backgroundImage.Y}, src: "images/${backgroundImage.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL});`)
     }
 
     const time = parameters.Time
@@ -15,10 +18,10 @@ export function convertParametersToJavascript(parameters) {
         result.push(`timeHourOnesFontArray = ${createFontArray(time.Hours.Ones)}`)
         result.push(`timeMinutesTensFontArray = ${createFontArray(time.Minutes.Tens)}`)
         result.push(`timeMinutesOnesFontArray = ${createFontArray(time.Minutes.Ones)}`)
-        result.push(`timeHourTens = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Hours.Tens.X}, y: ${time.Hours.Tens.Y}, src: "images/${time.Hours.Tens.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL })`)
-        result.push(`timeHourOnes = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Hours.Ones.X}, y: ${time.Hours.Ones.Y}, src: "images/${time.Hours.Ones.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL })`)
-        result.push(`timeMinutesTens = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Minutes.Tens.X}, y: ${time.Minutes.Tens.Y}, src: "images/${time.Minutes.Tens.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL })`)
-        result.push(`timeMinutesOnes = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Minutes.Ones.X}, y: ${time.Minutes.Ones.Y}, src: "images/${time.Minutes.Ones.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL })`)
+        result.push(`timeHourTens = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Hours.Tens.X + xOffset}, y: ${time.Hours.Tens.Y}, src: "images/${time.Hours.Tens.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL })`)
+        result.push(`timeHourOnes = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Hours.Ones.X + xOffset}, y: ${time.Hours.Ones.Y}, src: "images/${time.Hours.Ones.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL })`)
+        result.push(`timeMinutesTens = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Minutes.Tens.X + xOffset}, y: ${time.Minutes.Tens.Y}, src: "images/${time.Minutes.Tens.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL })`)
+        result.push(`timeMinutesOnes = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Minutes.Ones.X + xOffset}, y: ${time.Minutes.Ones.Y}, src: "images/${time.Minutes.Ones.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL })`)
         updateCalls += `updateTime();`
     }
 
@@ -52,9 +55,9 @@ export function convertParametersToJavascript(parameters) {
         let dateParams = []
         const month = dateSeparate.Month
         if (month) {
-            dateParams.push(`month_startX: ${month.TopLeftX}`)
+            dateParams.push(`month_startX: ${month.TopLeftX + xOffset}`)
             dateParams.push(`month_startY: ${month.TopLeftY}`)
-            dateParams.push(`month_align: ${getAlignHAndPosition(month.Alignment).alignment}`)
+            dateParams.push(`month_align: ${getAlignHAndPosition(month).alignment}`)
             dateParams.push(`month_space: ${month.SpacingX}`)
             dateParams.push(`month_zero: ${parameters.Date.MonthAndDayAndYear.TwoDigitsMonth}`)
             dateParams.push(`month_en_array: ${createFontArray(month)}`)
@@ -62,9 +65,9 @@ export function convertParametersToJavascript(parameters) {
 
         const day = dateSeparate.Day
         if (day) {
-            dateParams.push(`day_startX: ${day.TopLeftX}`)
+            dateParams.push(`day_startX: ${day.TopLeftX + xOffset}`)
             dateParams.push(`day_startY: ${day.TopLeftY}`)
-            dateParams.push(`day_align: ${getAlignHAndPosition(day.Alignment).alignment}`)
+            dateParams.push(`day_align: ${getAlignHAndPosition(day).alignment}`)
             dateParams.push(`day_space: ${day.SpacingX}`)
             dateParams.push(`day_zero: ${parameters.Date.MonthAndDayAndYear.TwoDigitsDay}`)
             dateParams.push(`day_en_array: ${createFontArray(day)}`)
@@ -75,7 +78,7 @@ export function convertParametersToJavascript(parameters) {
 
     const weatherIcon = parameters.Weather?.Icon?.CustomIcon
     if (weatherIcon) {
-        result.push(`hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:${weatherIcon.X},y:${weatherIcon.Y},image_array:${createWeatherArray(weatherIcon)},image_length:29,type:hmUI.data_type.WEATHER,show_level:hmUI.show_level.ONLY_NORMAL})`)
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:${weatherIcon.X + xOffset},y:${weatherIcon.Y},image_array:${createWeatherArray(weatherIcon)},image_length:29,type:hmUI.data_type.WEATHER,show_level:hmUI.show_level.ONLY_NORMAL})`)
     }
 
     const weatherTemperatureCurrent = parameters.Weather?.Temperature?.Current
@@ -107,19 +110,19 @@ export function convertParametersToJavascript(parameters) {
     const doNotDisturb = parameters.Status?.DoNotDisturb
     if (doNotDisturb) {
         const coordinates = doNotDisturb.Coordinates
-        result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${coordinates.X},y:${coordinates.Y},src: 'images/${doNotDisturb.OnImageIndex}.png',type:hmUI.system_status.DISTURB,show_level:hmUI.show_level.ONLY_NORMAL})`)
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${coordinates.X + xOffset},y:${coordinates.Y},src: 'images/${doNotDisturb.OnImageIndex}.png',type:hmUI.system_status.DISTURB,show_level:hmUI.show_level.ONLY_NORMAL})`)
     }
 
     const lock = parameters.Status?.Lock
     if (lock) {
         const coordinates = lock.Coordinates
-        result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${coordinates.X},y:${coordinates.Y},src: 'images/${lock.OffImageIndex}.png',type:hmUI.system_status.LOCK,show_level:hmUI.show_level.ONLY_NORMAL})`)
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${coordinates.X + xOffset},y:${coordinates.Y},src: 'images/${lock.OffImageIndex}.png',type:hmUI.system_status.LOCK,show_level:hmUI.show_level.ONLY_NORMAL})`)
     }
 
     const bluetooth = parameters.Status?.Bluetooth
     if (bluetooth) {
         const coordinates = bluetooth.Coordinates
-        result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${coordinates.X},y:${coordinates.Y},src: 'images/${bluetooth.OffImageIndex}.png',type:hmUI.system_status.DISCONNECT,show_level:hmUI.show_level.ONLY_NORMAL})`)
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${coordinates.X + xOffset},y:${coordinates.Y},src: 'images/${bluetooth.OffImageIndex}.png',type:hmUI.system_status.DISCONNECT,show_level:hmUI.show_level.ONLY_NORMAL})`)
     }
 
     const batteryText = parameters.Battery?.BatteryText
@@ -143,7 +146,7 @@ export function convertParametersToJavascript(parameters) {
 }
 
 function createProgress(progress, type) {
-    return `hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:${progress.X},y:${progress.Y},image_array:${createFontArray(progress)},image_length:${progress.ImagesCount},type:hmUI.data_type.${type},show_level:hmUI.show_level.ONLY_NORMAL})`
+    return `hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:${progress.X + xOffset},y:${progress.Y},image_array:${createFontArray(progress)},image_length:${progress.ImagesCount},type:hmUI.data_type.${type},show_level:hmUI.show_level.ONLY_NORMAL})`
 }
 
 function createNumber(param, type) {
@@ -181,7 +184,7 @@ function createNumber(param, type) {
         optionalParams += `, w: ${w}`
     }
 
-    return `hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: ${x}, y: ${number.TopLeftY}, h_space: ${number.SpacingX}, font_array: ${createFontArray(number)}, align_h: ${alignment}${optionalParams}, show_level: hmUI.show_level.ONLY_NORMAL})`
+    return `hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: ${x + xOffset}, y: ${number.TopLeftY}, h_space: ${number.SpacingX}, font_array: ${createFontArray(number)}, align_h: ${alignment}${optionalParams}, show_level: hmUI.show_level.ONLY_NORMAL})`
 }
 
 function createFontArray(font) {
@@ -209,26 +212,27 @@ function createWeatherArray(weather) {
 function getAlignHAndPosition(number) {
     const alignment = number.Alignment
     switch (alignment) {
-        case "Left":
-        case "TopLeft":
-        case "CenterLeft":
-        case "BottomLeft":
-            return { alignment: "hmUI.align.LEFT", x: number.TopLeftX }
         case "Right":
         case "TopRight":
         case "BottomRight":
         case "CenterRight":
             return { alignment: "hmUI.align.RIGHT", x: 0, w: number.BottomRightX }
         case "HCenter":
-        case "Top":
-        case "Bottom":
-        case "VCenter":
         case "TopCenter":
         case "BottomCenter":
         case "Center":
+            const center = (number.TopLeftX + number.BottomRightX) / 2
+            const halfWidth = Math.min(center, 152 - center)
+            return { alignment: "hmUI.align.CENTER_H", x: center - halfWidth, w: center + halfWidth }
+
+        case "Left":
+        case "TopLeft":
+        case "CenterLeft":
+        case "BottomLeft":
+        case "Top":
+        case "Bottom":
+        case "VCenter":
         default:
-            // const center = (number.TopLeftX + number.BottomRightX) / 2
-            // const halfWidth = Math.min(center, 152 - center)
-            return { alignment: "hmUI.align.CENTER_H", x: number.TopLeftX }
+            return { alignment: "hmUI.align.LEFT", x: number.TopLeftX }
     }
 }
