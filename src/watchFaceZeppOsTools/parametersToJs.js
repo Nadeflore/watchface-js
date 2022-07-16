@@ -14,10 +14,10 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
 
     const time = parameters.Time
     if (time) {
-        result.push(`timeHourTensFontArray = ${createFontArray(time.Hours.Tens)}`)
-        result.push(`timeHourOnesFontArray = ${createFontArray(time.Hours.Ones)}`)
-        result.push(`timeMinutesTensFontArray = ${createFontArray(time.Minutes.Tens)}`)
-        result.push(`timeMinutesOnesFontArray = ${createFontArray(time.Minutes.Ones)}`)
+        result.push(`timeHourTensFontArray = ${createImageArray(time.Hours.Tens)}`)
+        result.push(`timeHourOnesFontArray = ${createImageArray(time.Hours.Ones)}`)
+        result.push(`timeMinutesTensFontArray = ${createImageArray(time.Minutes.Tens)}`)
+        result.push(`timeMinutesOnesFontArray = ${createImageArray(time.Minutes.Ones)}`)
         result.push(`timeHourTens = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Hours.Tens.X + xOffset}, y: ${time.Hours.Tens.Y}, src: "images/${time.Hours.Tens.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL })`)
         result.push(`timeHourOnes = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Hours.Ones.X + xOffset}, y: ${time.Hours.Ones.Y}, src: "images/${time.Hours.Ones.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL })`)
         result.push(`timeMinutesTens = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Minutes.Tens.X + xOffset}, y: ${time.Minutes.Tens.Y}, src: "images/${time.Minutes.Tens.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL })`)
@@ -60,7 +60,7 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
             dateParams.push(`month_align: ${getAlignHAndPosition(month).alignment}`)
             dateParams.push(`month_space: ${month.SpacingX}`)
             dateParams.push(`month_zero: ${parameters.Date.MonthAndDayAndYear.TwoDigitsMonth}`)
-            dateParams.push(`month_en_array: ${createFontArray(month)}`)
+            dateParams.push(`month_en_array: ${createImageArray(month)}`)
         }
 
         const day = dateSeparate.Day
@@ -70,10 +70,15 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
             dateParams.push(`day_align: ${getAlignHAndPosition(day).alignment}`)
             dateParams.push(`day_space: ${day.SpacingX}`)
             dateParams.push(`day_zero: ${parameters.Date.MonthAndDayAndYear.TwoDigitsDay}`)
-            dateParams.push(`day_en_array: ${createFontArray(day)}`)
+            dateParams.push(`day_en_array: ${createImageArray(day)}`)
         }
 
         result.push(`hmUI.createWidget(hmUI.widget.IMG_DATE,{${dateParams.join(',')},show_level: hmUI.show_level.ONLY_NORMAL})`)
+    }
+
+    const enWeekDays = parameters.Date?.ENWeekDays
+    if (enWeekDays) {
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_WEEK, {x:${enWeekDays.X + xOffset},y:${enWeekDays.Y},week_en:${createImageArray(enWeekDays)},show_level: hmUI.show_level.ONLY_NORMAL})`)
     }
 
     const weatherIcon = parameters.Weather?.Icon?.CustomIcon
@@ -125,6 +130,11 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
         result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${coordinates.X + xOffset},y:${coordinates.Y},src: 'images/${bluetooth.OffImageIndex}.png',type:hmUI.system_status.DISCONNECT,show_level:hmUI.show_level.ONLY_NORMAL})`)
     }
 
+    const alarm = parameters.Alarm?.OnImage
+    if (alarm) {
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${alarm.X + xOffset},y:${alarm.Y},src:'images/${alarm.ImageIndex}.png',type:hmUI.system_status.CLOCK,show_level:hmUI.show_level.ONLY_NORMAL})`)
+    }
+
     const batteryText = parameters.Battery?.BatteryText
     if (batteryText) {
         result.push(createNumber(batteryText, "BATTERY"))
@@ -146,7 +156,7 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
 }
 
 function createProgress(progress, type) {
-    return `hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:${progress.X + xOffset},y:${progress.Y},image_array:${createFontArray(progress)},image_length:${progress.ImagesCount},type:hmUI.data_type.${type},show_level:hmUI.show_level.ONLY_NORMAL})`
+    return `hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:${progress.X + xOffset},y:${progress.Y},image_array:${createImageArray(progress)},image_length:${progress.ImagesCount},type:hmUI.data_type.${type},show_level:hmUI.show_level.ONLY_NORMAL})`
 }
 
 function createNumber(param, type) {
@@ -184,13 +194,13 @@ function createNumber(param, type) {
         optionalParams += `, w: ${w}`
     }
 
-    return `hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: ${x + xOffset}, y: ${number.TopLeftY}, h_space: ${number.SpacingX}, font_array: ${createFontArray(number)}, align_h: ${alignment}${optionalParams}, show_level: hmUI.show_level.ONLY_NORMAL})`
+    return `hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: ${x + xOffset}, y: ${number.TopLeftY}, h_space: ${number.SpacingX}, font_array: ${createImageArray(number)}, align_h: ${alignment}${optionalParams}, show_level: hmUI.show_level.ONLY_NORMAL})`
 }
 
-function createFontArray(font) {
+function createImageArray(arrayInfo) {
     let result = []
-    for (let i = 0; i < font.ImagesCount; i++) {
-        result.push(`'images/${font.ImageIndex + i}.png'`)
+    for (let i = 0; i < arrayInfo.ImagesCount; i++) {
+        result.push(`'images/${arrayInfo.ImageIndex + i}.png'`)
     }
 
     return `[${result.join(', ')}]`

@@ -165,6 +165,12 @@ describe('convertParametersToJavascript()', () => {
                         },
                         TwoDigitsMonth: true,
                         TwoDigitsDay: true
+                    },
+                    ENWeekDays: {
+                        X: 105,
+                        Y: 118,
+                        ImageIndex: 92,
+                        ImagesCount: 7
                     }
                 },
                 Weather: {
@@ -273,6 +279,13 @@ describe('convertParametersToJavascript()', () => {
                         ImagesCount: 8
                     }
                 },
+                Alarm: {
+                    OnImage: {
+                        X: 124,
+                        Y: 3,
+                        ImageIndex: 101
+                    }
+                },
                 HeartProgress: {
                     LineScale: {
                         X: 34,
@@ -306,6 +319,7 @@ hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 34, y: 300, h_space: 1, font_array:
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 34, y: 389, h_space: 1, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.DISTANCE, unit_en: 'images/62.png', dot_image: 'images/60.png', show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 107, y: 327, h_space: 0, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.PAI_WEEKLY, show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_DATE,{month_startX: 128,month_startY: 119,month_align: hmUI.align.CENTER_H,month_space: 0,month_zero: true,month_en_array: ['images/102.png', 'images/103.png', 'images/104.png', 'images/105.png', 'images/106.png', 'images/107.png', 'images/108.png', 'images/109.png', 'images/110.png', 'images/111.png'],day_startX: 127,day_startY: 92,day_align: hmUI.align.CENTER_H,day_space: 0,day_zero: true,day_en_array: ['images/102.png', 'images/103.png', 'images/104.png', 'images/105.png', 'images/106.png', 'images/107.png', 'images/108.png', 'images/109.png', 'images/110.png', 'images/111.png'],show_level: hmUI.show_level.ONLY_NORMAL})
+hmUI.createWidget(hmUI.widget.IMG_WEEK, {x:105,y:118,week_en:['images/92.png', 'images/93.png', 'images/94.png', 'images/95.png', 'images/96.png', 'images/97.png', 'images/98.png'],show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:23,y:420,image_array:['images/34.png', 'images/35.png', 'images/36.png', 'images/37.png', 'images/38.png', 'images/39.png', 'images/40.png', 'images/41.png', 'images/42.png', 'images/43.png', 'images/44.png', 'images/45.png', 'images/46.png', 'images/47.png', 'images/48.png', 'images/49.png', 'images/50.png', 'images/51.png', 'images/52.png', 'images/53.png', 'images/54.png', 'images/55.png', 'images/56.png', 'images/57.png', 'images/58.png', 'images/59.png', 'images/38.png', 'images/34.png', 'images/39.png', 'images/37.png'],image_length:29,type:hmUI.data_type.WEATHER,show_level:hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 35, y: 445, h_space: 1, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.CENTER_H, type: hmUI.data_type.WEATHER_CURRENT, unit_en: 'images/63.png', negative_image: 'images/61.png', w: 117, show_level: hmUI.show_level.ONLY_NORMAL})
 weatherWidget = hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 47, y: 424, h_space: 0, font_array: ['images/88.png', 'images/89.png', 'images/90.png', 'images/91.png', 'images/92.png', 'images/93.png', 'images/94.png', 'images/95.png', 'images/96.png', 'images/97.png'], align_h: hmUI.align.CENTER_H, unit_en: 'images/99.png', negative_image: 'images/98.png', dot_image: 'images/100.png', w: 105, show_level: hmUI.show_level.ONLY_NORMAL})
@@ -315,6 +329,7 @@ hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:34,y:376,image_array:['images/80.png'
 hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:90,y:30,src: 'images/22.png',type:hmUI.system_status.DISTURB,show_level:hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:54,y:30,src: 'images/23.png',type:hmUI.system_status.LOCK,show_level:hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:71,y:30,src: 'images/24.png',type:hmUI.system_status.DISCONNECT,show_level:hmUI.show_level.ONLY_NORMAL})
+hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:124,y:3,src:'images/101.png',type:hmUI.system_status.CLOCK,show_level:hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 77, y: 8, h_space: 0, font_array: ['images/88.png', 'images/89.png', 'images/90.png', 'images/91.png', 'images/92.png', 'images/93.png', 'images/94.png', 'images/95.png', 'images/96.png', 'images/97.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.BATTERY, show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:55,y:10,image_array:['images/25.png', 'images/26.png', 'images/27.png', 'images/28.png', 'images/29.png', 'images/30.png', 'images/31.png', 'images/32.png'],image_length:8,type:hmUI.data_type.BATTERY,show_level:hmUI.show_level.ONLY_NORMAL})
 updateTime();updateWeather();
