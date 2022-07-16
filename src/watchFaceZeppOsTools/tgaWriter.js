@@ -144,12 +144,23 @@ export function writeImageIndexed(pixels, width, height) {
 export function writeImageAutoDetectBestFormat(pixels, width, height) {
 
 	// Try to write indexed color images
+	let indexedColorImage
 	try {
-		return writeImageIndexed(pixels, width, height)
+		indexedColorImage = writeImageIndexed(pixels, width, height)
 	} catch (e) {
 	}
 
-	return writeImage(pixels, width, height, hasAlphaChannel(pixels) ? 32 : 16)
+	const colorDepth = hasAlphaChannel(pixels) ? 32 : 16
+	const trueColorImage = writeImage(pixels, width, height, colorDepth)
+
+
+	if (indexedColorImage != undefined && indexedColorImage.byteLength < trueColorImage.byteLength) {
+		console.log("Selected Indexed colors")
+		return indexedColorImage
+	} else {
+		console.log(`Selected true color ${colorDepth} bits`)
+		return trueColorImage
+	}
 }
 
 /**
@@ -159,7 +170,7 @@ export function writeImageAutoDetectBestFormat(pixels, width, height) {
 function hasAlphaChannel(pixels) {
 	for (let i = 0; i < pixels.length / 4; i++) {
 		const alpha = pixels[i * 4 + 3]
-		if (alpha != 0xFF) {
+		if (alpha < 0xF0) {
 			return true
 		}
 	}
