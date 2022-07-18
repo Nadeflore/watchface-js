@@ -231,7 +231,13 @@ function createWeatherArray(weather) {
 }
 
 function getAlignHAndPosition(number) {
-    const alignment = number.Alignment
+    let alignment = number.Alignment
+
+    // Fix alignment
+    if (number.BottomRightX - number.TopLeftX < 20) {
+        alignment = "Left"
+    }
+
     switch (alignment) {
         case "Right":
         case "TopRight":
