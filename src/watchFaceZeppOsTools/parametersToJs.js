@@ -82,6 +82,11 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
         result.push(`hmUI.createWidget(hmUI.widget.IMG_DATE,{${dateParams.join(',')},show_level: hmUI.show_level.ONLY_NORMAL})`)
     }
 
+    const dayAmPm = parameters.Date?.DayAmPm
+    if (dayAmPm) {
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_TIME, {am_x:${dayAmPm.X + xOffset},am_y:${dayAmPm.Y},pm_x:${dayAmPm.X + xOffset},pm_y:${dayAmPm.Y},am_en_path:'images/${dayAmPm.ImageIndexAMEN}.png',pm_en_path:'images/${dayAmPm.ImageIndexPMEN}.png',show_level: hmUI.show_level.ONLY_NORMAL})`)
+    }
+
     const enWeekDays = parameters.Date?.ENWeekDays
     if (enWeekDays) {
         result.push(`hmUI.createWidget(hmUI.widget.IMG_WEEK, {x:${enWeekDays.X + xOffset},y:${enWeekDays.Y},week_en:${createImageArray(enWeekDays)},show_level: hmUI.show_level.ONLY_NORMAL})`)
