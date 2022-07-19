@@ -67,7 +67,7 @@ export function convertMiBand6to7(buffer, addMask = true, xOffset = (192 - 152) 
       __$$module$$__.module = DeviceRuntimeCore.Page({
         init_view() {
             ${convertParametersToJavascript(parameters, xOffset)}
-            ${addMask ? `hmUI.createWidget(hmUI.widget.IMG, {x: ${xOffset}, y: 0, src: "images/mask.png", show_level: hmUI.show_level.ONLY_NORMAL});` : ""}
+            ${addMask ? `hmUI.createWidget(hmUI.widget.IMG, {x: ${xOffset}, y: 0, src: 'images/mask.png', show_level: hmUI.show_level.ONLY_NORMAL});` : ""}
         },
         onInit() {
           console.log("index page.js on init invoke");

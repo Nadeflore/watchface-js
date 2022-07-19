@@ -15,7 +15,7 @@ function convert() {
   const infile = process.argv[2]
   console.log("Converting " + infile)
   const inData = fs.readFileSync(infile).buffer
-  convertMiBand6to7(inData).then(data => {
+  convertMiBand6to7(inData, false).then(data => {
     fs.writeFileSync(OUTFILE, data)
     console.log("File written to " + OUTFILE)
   });

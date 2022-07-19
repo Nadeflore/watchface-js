@@ -6,7 +6,7 @@ describe('convertParametersToJavascript()', () => {
         expect(convertParametersToJavascript(
             { Background: { Image: { X: 10, Y: 20, ImageIndex: 43 } } }
         )).toStrictEqual(
-            `hmUI.createWidget(hmUI.widget.IMG, {x: 10, y: 20, src: "images/43.png", show_level: hmUI.show_level.ONLY_NORMAL});`
+            `hmUI.createWidget(hmUI.widget.IMG, {x: 10, y: 20, src: 'images/43.png', show_level: hmUI.show_level.ONLY_NORMAL});`
         )
     })
     it('convert parameters', () => {
@@ -163,6 +163,20 @@ describe('convertParametersToJavascript()', () => {
                                 ImagesCount: 10
                             }
                         },
+                        OneLineWithYear: {
+                            Number: {
+                                TopLeftX: 6,
+                                TopLeftY: 142,
+                                BottomRightX: 146,
+                                BottomRightY: 161,
+                                Alignment: "Center",
+                                SpacingX: 0,
+                                SpacingY: 0,
+                                ImageIndex: 12,
+                                ImagesCount: 10
+                            },
+                            DelimiterImageIndex: 22
+                        },
                         TwoDigitsMonth: true,
                         TwoDigitsDay: true
                     },
@@ -231,7 +245,65 @@ describe('convertParametersToJavascript()', () => {
                                 DelimiterImageIndex: 100,
                                 AppendSuffixToAll: true,
                                 SuffixImageIndex: 99
+                            },
+                            Separate: {
+                                Day: {
+                                    Number: {
+                                        TopLeftX: 13,
+                                        TopLeftY: 419,
+                                        BottomRightX: 51,
+                                        BottomRightY: 432,
+                                        Alignment: "Center",
+                                        SpacingX: 1,
+                                        SpacingY: 0,
+                                        ImageIndex: 68,
+                                        ImagesCount: 10
+                                    },
+                                    MinusImageIndex: 78,
+                                    SuffixImageIndex: 79
+                                },
+                                Night: {
+                                    Number: {
+                                        TopLeftX: 13,
+                                        TopLeftY: 436,
+                                        BottomRightX: 51,
+                                        BottomRightY: 449,
+                                        Alignment: "Center",
+                                        SpacingX: 1,
+                                        SpacingY: 0,
+                                        ImageIndex: 68,
+                                        ImagesCount: 10
+                                    },
+                                    MinusImageIndex: 78,
+                                    SuffixImageIndex: 79
+                                }
                             }
+                        }
+                    },
+                    Humidity: {
+                        Number: {
+                            TopLeftX: 118,
+                            TopLeftY: 419,
+                            BottomRightX: 144,
+                            BottomRightY: 432,
+                            Alignment: "TopLeft",
+                            SpacingX: 1,
+                            SpacingY: 0,
+                            ImageIndex: 132,
+                            ImagesCount: 10
+                        }
+                    },
+                    Wind: {
+                        Number: {
+                            TopLeftX: 118,
+                            TopLeftY: 436,
+                            BottomRightX: 144,
+                            BottomRightY: 449,
+                            Alignment: "TopLeft",
+                            SpacingX: 1,
+                            SpacingY: 0,
+                            ImageIndex: 132,
+                            ImagesCount: 10
                         }
                     }
                 },
@@ -325,27 +397,32 @@ describe('convertParametersToJavascript()', () => {
                 }
             }
         )).toStrictEqual(
-            `hmUI.createWidget(hmUI.widget.IMG, {x: 0, y: 0, src: \"images/0.png\", show_level: hmUI.show_level.ONLY_NORMAL});
-hmUI.createWidget(hmUI.widget.IMG_ANIM, { x: 11, y: 186, anim_path: "images", anim_prefix: 'anim', anim_ext: "png",anim_fps: 7, anim_size: 10, repeat_count: 255, anim_repeat: true, anim_status: hmUI.anim_status.START, show_level: hmUI.show_level.ONLY_NORMAL })
+            `hmUI.createWidget(hmUI.widget.IMG, {x: 0, y: 0, src: 'images/0.png', show_level: hmUI.show_level.ONLY_NORMAL});
+hmUI.createWidget(hmUI.widget.IMG_ANIM, { x: 11, y: 186, anim_path: 'images', anim_prefix: 'anim', anim_ext: 'png',anim_fps: 7, anim_size: 10, repeat_count: 255, anim_repeat: true, anim_status: hmUI.anim_status.START, show_level: hmUI.show_level.ONLY_NORMAL })
 timeHourTensFontArray = ['images/1.png', 'images/2.png', 'images/3.png', 'images/4.png', 'images/5.png', 'images/6.png', 'images/7.png', 'images/8.png', 'images/9.png', 'images/10.png']
 timeHourOnesFontArray = ['images/1.png', 'images/2.png', 'images/3.png', 'images/4.png', 'images/5.png', 'images/6.png', 'images/7.png', 'images/8.png', 'images/9.png', 'images/10.png']
 timeMinutesTensFontArray = ['images/1.png', 'images/2.png', 'images/3.png', 'images/4.png', 'images/5.png', 'images/6.png', 'images/7.png', 'images/8.png', 'images/9.png', 'images/10.png']
 timeMinutesOnesFontArray = ['images/1.png', 'images/2.png', 'images/3.png', 'images/4.png', 'images/5.png', 'images/6.png', 'images/7.png', 'images/8.png', 'images/9.png', 'images/10.png']
-timeHourTens = hmUI.createWidget(hmUI.widget.IMG, { x: 2, y: 88, src: \"images/1.png\", show_level: hmUI.show_level.ONLY_NORMAL })
-timeHourOnes = hmUI.createWidget(hmUI.widget.IMG, { x: 61, y: 88, src: \"images/1.png\", show_level: hmUI.show_level.ONLY_NORMAL })
-timeMinutesTens = hmUI.createWidget(hmUI.widget.IMG, { x: 2, y: 180, src: \"images/1.png\", show_level: hmUI.show_level.ONLY_NORMAL })
-timeMinutesOnes = hmUI.createWidget(hmUI.widget.IMG, { x: 61, y: 180, src: \"images/1.png\", show_level: hmUI.show_level.ONLY_NORMAL })
+timeHourTens = hmUI.createWidget(hmUI.widget.IMG, { x: 2, y: 88, src: 'images/1.png', show_level: hmUI.show_level.ONLY_NORMAL })
+timeHourOnes = hmUI.createWidget(hmUI.widget.IMG, { x: 61, y: 88, src: 'images/1.png', show_level: hmUI.show_level.ONLY_NORMAL })
+timeMinutesTens = hmUI.createWidget(hmUI.widget.IMG, { x: 2, y: 180, src: 'images/1.png', show_level: hmUI.show_level.ONLY_NORMAL })
+timeMinutesOnes = hmUI.createWidget(hmUI.widget.IMG, { x: 61, y: 180, src: 'images/1.png', show_level: hmUI.show_level.ONLY_NORMAL })
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 34, y: 328, h_space: 1, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.STEP, show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 34, y: 356, h_space: 1, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.CAL, unit_en: 'images/59.png', show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 34, y: 300, h_space: 1, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.HEART, invalid_image: 'images/21.png', show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 34, y: 389, h_space: 1, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.DISTANCE, unit_en: 'images/62.png', dot_image: 'images/60.png', show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 107, y: 327, h_space: 0, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.PAI_WEEKLY, show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_DATE,{month_startX: 128,month_startY: 119,month_align: hmUI.align.CENTER_H,month_space: 0,month_zero: true,month_en_array: ['images/102.png', 'images/103.png', 'images/104.png', 'images/105.png', 'images/106.png', 'images/107.png', 'images/108.png', 'images/109.png', 'images/110.png', 'images/111.png'],day_startX: 127,day_startY: 92,day_align: hmUI.align.CENTER_H,day_space: 0,day_zero: true,day_en_array: ['images/102.png', 'images/103.png', 'images/104.png', 'images/105.png', 'images/106.png', 'images/107.png', 'images/108.png', 'images/109.png', 'images/110.png', 'images/111.png'],show_level: hmUI.show_level.ONLY_NORMAL})
+hmUI.createWidget(hmUI.widget.IMG_DATE,{year_startX: 6,year_startY: 142,year_align: hmUI.align.CENTER_H,year_space: 0,year_unit_en:'images/22.png',year_en_array: ['images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png', 'images/21.png'],year_zero: true,month_follow: true,month_align: hmUI.align.CENTER_H,month_space: 0,month_zero: true,month_unit_en:'images/22.png',month_en_array: ['images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png', 'images/21.png'],day_follow: true,day_align: hmUI.align.CENTER_H,day_space: 0,day_zero: true,day_en_array: ['images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png', 'images/21.png'],show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_TIME, {am_x:52,am_y:142,pm_x:52,pm_y:142,am_en_path:'images/63.png',pm_en_path:'images/64.png',show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_WEEK, {x:105,y:118,week_en:['images/92.png', 'images/93.png', 'images/94.png', 'images/95.png', 'images/96.png', 'images/97.png', 'images/98.png'],show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:23,y:420,image_array:['images/34.png', 'images/35.png', 'images/36.png', 'images/37.png', 'images/38.png', 'images/39.png', 'images/40.png', 'images/41.png', 'images/42.png', 'images/43.png', 'images/44.png', 'images/45.png', 'images/46.png', 'images/47.png', 'images/48.png', 'images/49.png', 'images/50.png', 'images/51.png', 'images/52.png', 'images/53.png', 'images/54.png', 'images/55.png', 'images/56.png', 'images/57.png', 'images/58.png', 'images/59.png', 'images/38.png', 'images/34.png', 'images/39.png', 'images/37.png'],image_length:29,type:hmUI.data_type.WEATHER,show_level:hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 35, y: 445, h_space: 1, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.CENTER_H, type: hmUI.data_type.WEATHER_CURRENT, unit_en: 'images/63.png', negative_image: 'images/61.png', w: 117, show_level: hmUI.show_level.ONLY_NORMAL})
 weatherWidget = hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 47, y: 424, h_space: 0, font_array: ['images/88.png', 'images/89.png', 'images/90.png', 'images/91.png', 'images/92.png', 'images/93.png', 'images/94.png', 'images/95.png', 'images/96.png', 'images/97.png'], align_h: hmUI.align.CENTER_H, unit_en: 'images/99.png', negative_image: 'images/98.png', dot_image: 'images/100.png', w: 105, show_level: hmUI.show_level.ONLY_NORMAL})
+hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 0, y: 419, h_space: 1, font_array: ['images/68.png', 'images/69.png', 'images/70.png', 'images/71.png', 'images/72.png', 'images/73.png', 'images/74.png', 'images/75.png', 'images/76.png', 'images/77.png'], align_h: hmUI.align.CENTER_H, type: hmUI.data_type.WEATHER_HIGH, unit_en: 'images/79.png', negative_image: 'images/78.png', w: 64, show_level: hmUI.show_level.ONLY_NORMAL})
+hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 0, y: 436, h_space: 1, font_array: ['images/68.png', 'images/69.png', 'images/70.png', 'images/71.png', 'images/72.png', 'images/73.png', 'images/74.png', 'images/75.png', 'images/76.png', 'images/77.png'], align_h: hmUI.align.CENTER_H, type: hmUI.data_type.WEATHER_LOW, unit_en: 'images/79.png', negative_image: 'images/78.png', w: 64, show_level: hmUI.show_level.ONLY_NORMAL})
+hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 118, y: 419, h_space: 1, font_array: ['images/132.png', 'images/133.png', 'images/134.png', 'images/135.png', 'images/136.png', 'images/137.png', 'images/138.png', 'images/139.png', 'images/140.png', 'images/141.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.HUMIDITY, show_level: hmUI.show_level.ONLY_NORMAL})
+hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 118, y: 436, h_space: 1, font_array: ['images/132.png', 'images/133.png', 'images/134.png', 'images/135.png', 'images/136.png', 'images/137.png', 'images/138.png', 'images/139.png', 'images/140.png', 'images/141.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.WIND, show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:34,y:348,image_array:['images/64.png', 'images/65.png', 'images/66.png', 'images/67.png', 'images/68.png', 'images/69.png', 'images/70.png', 'images/71.png'],image_length:8,type:hmUI.data_type.STEP,show_level:hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:34,y:320,image_array:['images/72.png', 'images/73.png', 'images/74.png', 'images/75.png', 'images/76.png', 'images/77.png', 'images/78.png', 'images/79.png'],image_length:8,type:hmUI.data_type.HEART,show_level:hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:34,y:376,image_array:['images/80.png', 'images/81.png', 'images/82.png', 'images/83.png', 'images/84.png', 'images/85.png', 'images/86.png', 'images/87.png'],image_length:8,type:hmUI.data_type.CAL,show_level:hmUI.show_level.ONLY_NORMAL})
