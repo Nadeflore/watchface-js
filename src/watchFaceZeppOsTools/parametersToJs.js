@@ -12,6 +12,12 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
         result.push(`hmUI.createWidget(hmUI.widget.IMG, {x: ${backgroundImage.X + xOffset}, y: ${backgroundImage.Y}, src: "images/${backgroundImage.ImageIndex}.png", show_level: hmUI.show_level.ONLY_NORMAL});`)
     }
 
+    const animation = parameters.Other?.Animation
+    if (animation) {
+        const animationImages = animation.AnimationImages
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_ANIM, { x: ${animationImages.X + xOffset}, y: ${animationImages.Y}, anim_path: "images", anim_prefix: 'anim', anim_ext: "png",anim_fps: ${Math.round(1000 / animation.Speed)}, anim_size: ${animationImages.ImagesCount}, repeat_count: ${animation.RepeatCount}, anim_repeat: ${animation.RepeatCount > 0}, anim_status: hmUI.anim_status.START, show_level: hmUI.show_level.ONLY_NORMAL })`)
+    }
+
     const time = parameters.Time
     if (time) {
         result.push(`timeHourTensFontArray = ${createImageArray(time.Hours.Tens)}`)

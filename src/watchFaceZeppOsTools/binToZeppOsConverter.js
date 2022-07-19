@@ -256,7 +256,7 @@ export function convertMiBand6to7(buffer, addMask = true, xOffset = (192 - 152) 
 
    const imgFolder = zip.folder("assets").folder("images")
    tgaImages.forEach((img, i) => {
-      imgFolder.file(`${i}.png`, img)
+      imgFolder.file(getImageName(i, parameters), img)
    })
 
    if (addMask) {
@@ -282,4 +282,23 @@ function changeWidthKeepRatio(img, newWidth) {
    }
 
    return { pixels: result, width: newWidth, height: img.height }
+}
+
+/**
+ * Return the name to use for a given image
+ * For animation images it will be anim_xx.png
+ * For other images it will be {id}.png
+ * @param {number} id 
+ * @param {object} parameters 
+ */
+function getImageName(id, parameters) {
+   const info = parameters.Other?.Animation?.AnimationImages
+   if (info) {
+      let { ImageIndex, ImagesCount } = info;
+      if (id >= ImageIndex && id < ImageIndex + ImagesCount) {
+         return `anim_${id - ImageIndex}.png`
+      }
+   }
+
+   return `${id}.png`
 }

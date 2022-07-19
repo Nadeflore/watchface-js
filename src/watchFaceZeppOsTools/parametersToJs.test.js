@@ -279,6 +279,19 @@ describe('convertParametersToJavascript()', () => {
                         ImagesCount: 8
                     }
                 },
+                Other: {
+                    Animation: {
+                        AnimationImages: {
+                            X: 11,
+                            Y: 186,
+                            ImageIndex: 95,
+                            ImagesCount: 10
+                        },
+                        Speed: 150,
+                        RepeatCount: 255,
+                        UnknownV4: 1
+                    }
+                },
                 Alarm: {
                     OnImage: {
                         X: 124,
@@ -305,6 +318,7 @@ describe('convertParametersToJavascript()', () => {
             }
         )).toStrictEqual(
             `hmUI.createWidget(hmUI.widget.IMG, {x: 0, y: 0, src: \"images/0.png\", show_level: hmUI.show_level.ONLY_NORMAL});
+hmUI.createWidget(hmUI.widget.IMG_ANIM, { x: 11, y: 186, anim_path: "images", anim_prefix: 'anim', anim_ext: "png",anim_fps: 7, anim_size: 10, repeat_count: 255, anim_repeat: true, anim_status: hmUI.anim_status.START, show_level: hmUI.show_level.ONLY_NORMAL })
 timeHourTensFontArray = ['images/1.png', 'images/2.png', 'images/3.png', 'images/4.png', 'images/5.png', 'images/6.png', 'images/7.png', 'images/8.png', 'images/9.png', 'images/10.png']
 timeHourOnesFontArray = ['images/1.png', 'images/2.png', 'images/3.png', 'images/4.png', 'images/5.png', 'images/6.png', 'images/7.png', 'images/8.png', 'images/9.png', 'images/10.png']
 timeMinutesTensFontArray = ['images/1.png', 'images/2.png', 'images/3.png', 'images/4.png', 'images/5.png', 'images/6.png', 'images/7.png', 'images/8.png', 'images/9.png', 'images/10.png']
