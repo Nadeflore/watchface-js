@@ -9,6 +9,34 @@ describe('convertParametersToJavascript()', () => {
             `hmUI.createWidget(hmUI.widget.IMG, {x: 10, y: 20, src: 'images/43.png', show_level: hmUI.show_level.ONLY_NORMAL});`
         )
     })
+    it('convert date one line parameter', () => {
+        expect(convertParametersToJavascript(
+            {
+                Date: {
+                    MonthAndDayAndYear: {
+                        OneLine: {
+                            Number: {
+                                TopLeftX: 6,
+                                TopLeftY: 142,
+                                BottomRightX: 146,
+                                BottomRightY: 161,
+                                Alignment: "Center",
+                                SpacingX: 0,
+                                SpacingY: 0,
+                                ImageIndex: 12,
+                                ImagesCount: 10
+                            },
+                            DelimiterImageIndex: 22
+                        },
+                        TwoDigitsMonth: false,
+                        TwoDigitsDay: false
+                    }
+                }
+            }
+        )).toStrictEqual(
+            `hmUI.createWidget(hmUI.widget.IMG_DATE,{month_startX: 6,month_startY: 142,month_align: hmUI.align.CENTER_H,month_space: 0,month_zero: false,month_unit_en:'images/22.png',month_en_array: ['images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png', 'images/21.png'],day_follow: true,day_align: hmUI.align.CENTER_H,day_space: 0,day_zero: false,day_en_array: ['images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png', 'images/21.png'],show_level: hmUI.show_level.ONLY_NORMAL})`
+        )
+    })
     it('convert parameters', () => {
         expect(convertParametersToJavascript(
             {
@@ -62,6 +90,11 @@ describe('convertParametersToJavascript()', () => {
                             ImageIndex: 1,
                             ImagesCount: 10
                         }
+                    },
+                    DelimiterImage: {
+                        X: 70,
+                        Y: 105,
+                        ImageIndex: 12
                     },
                     DrawingOrder: false
                 },
@@ -407,6 +440,7 @@ timeHourTens = hmUI.createWidget(hmUI.widget.IMG, { x: 2, y: 88, src: 'images/1.
 timeHourOnes = hmUI.createWidget(hmUI.widget.IMG, { x: 61, y: 88, src: 'images/1.png', show_level: hmUI.show_level.ONLY_NORMAL })
 timeMinutesTens = hmUI.createWidget(hmUI.widget.IMG, { x: 2, y: 180, src: 'images/1.png', show_level: hmUI.show_level.ONLY_NORMAL })
 timeMinutesOnes = hmUI.createWidget(hmUI.widget.IMG, { x: 61, y: 180, src: 'images/1.png', show_level: hmUI.show_level.ONLY_NORMAL })
+hmUI.createWidget(hmUI.widget.IMG, {x: 70, y: 105, src: 'images/12.png', show_level: hmUI.show_level.ONLY_NORMAL});
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 34, y: 328, h_space: 1, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.STEP, show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 34, y: 356, h_space: 1, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.CAL, unit_en: 'images/59.png', show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 34, y: 300, h_space: 1, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.HEART, invalid_image: 'images/21.png', show_level: hmUI.show_level.ONLY_NORMAL})

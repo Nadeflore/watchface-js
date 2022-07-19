@@ -29,6 +29,11 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
         result.push(`timeMinutesTens = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Minutes.Tens.X + xOffset}, y: ${time.Minutes.Tens.Y}, src: 'images/${time.Minutes.Tens.ImageIndex}.png', show_level: hmUI.show_level.ONLY_NORMAL })`)
         result.push(`timeMinutesOnes = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Minutes.Ones.X + xOffset}, y: ${time.Minutes.Ones.Y}, src: 'images/${time.Minutes.Ones.ImageIndex}.png', show_level: hmUI.show_level.ONLY_NORMAL })`)
         updateCalls += `updateTime();`
+
+        const delimiterImage = time.DelimiterImage
+        if (delimiterImage) {
+            result.push(`hmUI.createWidget(hmUI.widget.IMG, {x: ${delimiterImage.X + xOffset}, y: ${delimiterImage.Y}, src: 'images/${delimiterImage.ImageIndex}.png', show_level: hmUI.show_level.ONLY_NORMAL});`)
+        }
     }
 
     const steps = parameters.Activity?.Steps
@@ -83,23 +88,30 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
     }
 
     const dateOneLineWithYear = parameters.Date?.MonthAndDayAndYear?.OneLineWithYear
-    if (dateOneLineWithYear) {
+    const dateOneLine = dateOneLineWithYear || parameters.Date?.MonthAndDayAndYear?.OneLine
+
+    if (dateOneLine) {
         let dateParams = []
-        const number = dateOneLineWithYear.Number
+        const number = dateOneLine.Number
 
-        dateParams.push(`year_startX: ${number.TopLeftX + xOffset}`)
-        dateParams.push(`year_startY: ${number.TopLeftY}`)
-        dateParams.push(`year_align: ${getAlignHAndPosition(number).alignment}`)
-        dateParams.push(`year_space: ${number.SpacingX}`)
-        dateParams.push(`year_unit_en:'images/${dateOneLineWithYear.DelimiterImageIndex}.png'`)
-        dateParams.push(`year_en_array: ${createImageArray(number)}`)
-        dateParams.push(`year_zero: true`)
+        if (dateOneLineWithYear) {
+            dateParams.push(`year_startX: ${number.TopLeftX + xOffset}`)
+            dateParams.push(`year_startY: ${number.TopLeftY}`)
+            dateParams.push(`year_align: ${getAlignHAndPosition(number).alignment}`)
+            dateParams.push(`year_space: ${number.SpacingX}`)
+            dateParams.push(`year_unit_en:'images/${dateOneLine.DelimiterImageIndex}.png'`)
+            dateParams.push(`year_en_array: ${createImageArray(number)}`)
+            dateParams.push(`year_zero: true`)
+            dateParams.push(`month_follow: true`)
+        } else {
+            dateParams.push(`month_startX: ${number.TopLeftX + xOffset}`)
+            dateParams.push(`month_startY: ${number.TopLeftY}`)
+        }
 
-        dateParams.push(`month_follow: true`)
         dateParams.push(`month_align: ${getAlignHAndPosition(number).alignment}`)
         dateParams.push(`month_space: ${number.SpacingX}`)
         dateParams.push(`month_zero: ${parameters.Date.MonthAndDayAndYear.TwoDigitsMonth}`)
-        dateParams.push(`month_unit_en:'images/${dateOneLineWithYear.DelimiterImageIndex}.png'`)
+        dateParams.push(`month_unit_en:'images/${dateOneLine.DelimiterImageIndex}.png'`)
         dateParams.push(`month_en_array: ${createImageArray(number)}`)
 
         dateParams.push(`day_follow: true`)
