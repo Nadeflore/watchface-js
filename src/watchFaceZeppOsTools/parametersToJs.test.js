@@ -9,11 +9,19 @@ describe('convertParametersToJavascript()', () => {
             `hmUI.createWidget(hmUI.widget.IMG, {x: 10, y: 20, src: 'images/43.png', show_level: hmUI.show_level.ONLY_NORMAL});`
         )
     })
-    it('convert date one line parameter', () => {
+    it('convert specific parameters', () => {
         expect(convertParametersToJavascript(
             {
                 Date: {
                     MonthAndDayAndYear: {
+                        Separate: {
+                            MonthsEN: {
+                                X: 44,
+                                Y: 190,
+                                ImageIndex: 110,
+                                ImagesCount: 12
+                            }
+                        },
                         OneLine: {
                             Number: {
                                 TopLeftX: 6,
@@ -31,6 +39,32 @@ describe('convertParametersToJavascript()', () => {
                         TwoDigitsMonth: false,
                         TwoDigitsDay: false
                     }
+                },
+                Other: {
+                    Animation: [
+                        {
+                            AnimationImages: {
+                                X: 73,
+                                Y: 112,
+                                ImageIndex: 12,
+                                ImagesCount: 4
+                            },
+                            Speed: 250,
+                            RepeatCount: 999,
+                            UnknownV4: 0
+                        },
+                        {
+                            AnimationImages: {
+                                X: 39,
+                                Y: 218,
+                                ImageIndex: 16,
+                                ImagesCount: 8
+                            },
+                            Speed: 150,
+                            RepeatCount: 999,
+                            UnknownV4: 0
+                        }
+                    ]
                 }
             }
         )).toStrictEqual(
@@ -406,6 +440,23 @@ describe('convertParametersToJavascript()', () => {
                     }
                 },
                 Alarm: {
+                    Number: {
+                        TopLeftX: 83,
+                        TopLeftY: 67,
+                        BottomRightX: 0,
+                        BottomRightY: 0,
+                        Alignment: "TopLeft",
+                        SpacingX: 1,
+                        SpacingY: 0,
+                        ImageIndex: 45,
+                        ImagesCount: 10
+                    },
+                    DelimiterImageIndex: 44,
+                    NoDataImage: {
+                        X: 83,
+                        Y: 70,
+                        ImageIndex: 43
+                    },
                     OnImage: {
                         X: 124,
                         Y: 3,

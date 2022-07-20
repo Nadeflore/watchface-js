@@ -286,17 +286,24 @@ function changeWidthKeepRatio(img, newWidth) {
 
 /**
  * Return the name to use for a given image
- * For animation images it will be anim_xx.png
+ * For animation images it will be anim{animation id}_{animation image id}.png
  * For other images it will be {id}.png
  * @param {number} id 
  * @param {object} parameters 
  */
 function getImageName(id, parameters) {
-   const info = parameters.Other?.Animation?.AnimationImages
-   if (info) {
-      let { ImageIndex, ImagesCount } = info;
-      if (id >= ImageIndex && id < ImageIndex + ImagesCount) {
-         return `anim_${id - ImageIndex}.png`
+
+   let animations = parameters.Other?.Animation
+   if (animations) {
+      // Pack to list if not a list
+      if (!Array.isArray(animations)) {
+         animations = [animations]
+      }
+      for (let i = 0; i < animations.length; i++) {
+         let { ImageIndex, ImagesCount } = animations[i].AnimationImages;
+         if (id >= ImageIndex && id < ImageIndex + ImagesCount) {
+            return `anim${i}_${id - ImageIndex}.png`
+         }
       }
    }
 

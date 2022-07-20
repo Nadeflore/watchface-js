@@ -12,10 +12,17 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
         result.push(`hmUI.createWidget(hmUI.widget.IMG, {x: ${backgroundImage.X + xOffset}, y: ${backgroundImage.Y}, src: 'images/${backgroundImage.ImageIndex}.png', show_level: hmUI.show_level.ONLY_NORMAL});`)
     }
 
-    const animation = parameters.Other?.Animation
-    if (animation) {
-        const animationImages = animation.AnimationImages
-        result.push(`hmUI.createWidget(hmUI.widget.IMG_ANIM, { x: ${animationImages.X + xOffset}, y: ${animationImages.Y}, anim_path: 'images', anim_prefix: 'anim', anim_ext: 'png',anim_fps: ${Math.round(1000 / animation.Speed)}, anim_size: ${animationImages.ImagesCount}, repeat_count: ${animation.RepeatCount}, anim_repeat: ${animation.RepeatCount > 0}, anim_status: hmUI.anim_status.START, show_level: hmUI.show_level.ONLY_NORMAL })`)
+    let animations = parameters.Other?.Animation
+    if (animations) {
+        // Pack to list if not a list
+        if (!Array.isArray(animations)) {
+            animations = [animations]
+        }
+
+        animations.forEach((animation, i) => {
+            const animationImages = animation.AnimationImages
+            result.push(`hmUI.createWidget(hmUI.widget.IMG_ANIM, { x: ${animationImages.X + xOffset}, y: ${animationImages.Y}, anim_path: 'images', anim_prefix: 'anim${i}', anim_ext: 'png',anim_fps: ${Math.round(1000 / animation.Speed)}, anim_size: ${animationImages.ImagesCount}, repeat_count: ${animation.RepeatCount}, anim_repeat: ${animation.RepeatCount > 0}, anim_status: hmUI.anim_status.START, show_level: hmUI.show_level.ONLY_NORMAL })`)
+        })
     }
 
     const time = parameters.Time
@@ -72,6 +79,14 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
             dateParams.push(`month_space: ${month.SpacingX}`)
             dateParams.push(`month_zero: ${parameters.Date.MonthAndDayAndYear.TwoDigitsMonth}`)
             dateParams.push(`month_en_array: ${createImageArray(month)}`)
+        } else {
+            const monthsEn = dateSeparate.MonthsEN
+            if (monthsEn) {
+                dateParams.push(`month_startX: ${monthsEn.X + xOffset}`)
+                dateParams.push(`month_startY: ${monthsEn.Y}`)
+                dateParams.push(`month_en_array: ${createImageArray(monthsEn)}`)
+                dateParams.push(`month_is_character: true`)
+            }
         }
 
         const day = dateSeparate.Day
@@ -204,9 +219,17 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
         result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${coordinates.X + xOffset},y:${coordinates.Y},src: 'images/${bluetooth.OffImageIndex}.png',type:hmUI.system_status.DISCONNECT,show_level:hmUI.show_level.ONLY_NORMAL})`)
     }
 
-    const alarm = parameters.Alarm?.OnImage
+    const alarm = parameters.Alarm
     if (alarm) {
-        result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${alarm.X + xOffset},y:${alarm.Y},src:'images/${alarm.ImageIndex}.png',type:hmUI.system_status.CLOCK,show_level:hmUI.show_level.ONLY_NORMAL})`)
+        const alarmIcon = alarm.OnImage
+        if (alarmIcon) {
+            result.push(`hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:${alarmIcon.X + xOffset},y:${alarmIcon.Y},src:'images/${alarmIcon.ImageIndex}.png',type:hmUI.system_status.CLOCK,show_level:hmUI.show_level.ONLY_NORMAL})`)
+        }
+
+        const alarmNumber = alarm.Number
+        if (alarmNumber) {
+            result.push(createNumber(alarm, 'ALARM_CLOCK'))
+        }
     }
 
     const batteryText = parameters.Battery?.BatteryText
@@ -244,6 +267,9 @@ function createNumber(param, type) {
     }
     if (param.NoDataImageIndex) {
         optionalParams += `, invalid_image: 'images/${param.NoDataImageIndex}.png'`
+    }
+    if (param.NoDataImage) {
+        optionalParams += `, invalid_image: 'images/${param.NoDataImage.ImageIndex}.png'`
     }
     if (param.KmSuffixImageIndex) {
         optionalParams += `, unit_en: 'images/${param.KmSuffixImageIndex}.png'`
