@@ -287,6 +287,10 @@ function createNumber(param, type) {
         optionalParams += `, dot_image: 'images/${param.DelimiterImageIndex}.png'`
     }
 
+    if (type == "ALARM_CLOCK") {
+        optionalParams += `, padding: true`
+    }
+
     // Compute position
     const { alignment, x, w } = getAlignHAndPosition(number)
 
