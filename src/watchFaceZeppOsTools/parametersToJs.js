@@ -201,35 +201,11 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
         result.push(createNumber(uv, 'UVI'))
     }
 
-    const stepsProgressLine = parameters.StepsProgress?.LineScale
-    if (stepsProgressLine) {
-        result.push(createProgressLine(stepsProgressLine, 'STEP'))
-    }
+    createProgress(parameters.StepsProgress, 'STEP', result)
 
-    const stepsProgressCircle = parameters.StepsProgress?.CircleScale
-    if (stepsProgressCircle) {
-        result.push(createProgressCircle(stepsProgressCircle, 'STEP'))
-    }
+    createProgress(parameters.HeartProgress, 'HEART', result)
 
-    const heartProgressLinear = parameters.HeartProgress?.Linear
-    if (heartProgressLinear) {
-        result.push(createProgressLinear(heartProgressLinear, 'HEART'))
-    }
-
-    const heartProgressLine = parameters.HeartProgress?.LineScale
-    if (heartProgressLine) {
-        result.push(createProgressLine(heartProgressLine, 'HEART'))
-    }
-
-    const caloriesProgressLine = parameters.CaloriesProgress?.LineScale
-    if (caloriesProgressLine) {
-        result.push(createProgressLine(caloriesProgressLine, 'CAL'))
-    }
-
-    const caloriesProgressLinear = parameters.CaloriesProgress?.Linear
-    if (caloriesProgressLinear) {
-        result.push(createProgressLinear(caloriesProgressLinear, 'CAL'))
-    }
+    createProgress(parameters.CaloriesProgress, 'CAL', result)
 
     const doNotDisturb = parameters.Status?.DoNotDisturb
     if (doNotDisturb) {
@@ -284,6 +260,23 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
     }
 
     return result.join('\n')
+}
+
+function createProgress(parameter, type, result) {
+    const linear = parameter?.Linear
+    if (linear) {
+        result.push(createProgressLinear(linear, type))
+    }
+
+    const line = parameter?.LineScale
+    if (line) {
+        result.push(createProgressLine(line, type))
+    }
+
+    const circle = parameter?.CircleScale
+    if (circle) {
+        result.push(createProgressCircle(circle, type))
+    }
 }
 
 function createProgressLine(progress, type) {
