@@ -133,7 +133,41 @@ hmUI.createWidget(hmUI.widget.IMG_DATE,{month_startX: 6,month_startY: 142,month_
                         Y: 105,
                         ImageIndex: 12
                     },
-                    DrawingOrder: false
+                    SunsetTimeNumber: {
+                        TopLeftX: 32,
+                        TopLeftY: 185,
+                        BottomRightX: 148,
+                        BottomRightY: 301,
+                        Alignment: "TopRight",
+                        SpacingX: 0,
+                        SpacingY: 0,
+                        ImageIndex: 120,
+                        ImagesCount: 10
+                    },
+                    SunsetTimeDelimiterImageIndex: 130,
+                    SunriseTimeNumber: {
+                        TopLeftX: 0,
+                        TopLeftY: 155,
+                        BottomRightX: 148,
+                        BottomRightY: 301,
+                        Alignment: "TopRight",
+                        SpacingX: 0,
+                        SpacingY: 0,
+                        ImageIndex: 120,
+                        ImagesCount: 10
+                    },
+                    SunriseTimeDelimiterImageIndex: 130,
+                    DrawingOrder: false,
+                    SunsetTimeNoDataImage: {
+                        X: 113,
+                        Y: 281,
+                        ImageIndex: 133
+                    },
+                    SunriseTimeNoDataImage: {
+                        X: 0,
+                        Y: 150,
+                        ImageIndex: 133
+                    }
                 },
                 Activity: {
                     Steps: {
@@ -375,6 +409,34 @@ hmUI.createWidget(hmUI.widget.IMG_DATE,{month_startX: 6,month_startY: 142,month_
                             ImageIndex: 132,
                             ImagesCount: 10
                         }
+                    },
+                    UVIndex: {
+                        UV: {
+                            Number: {
+                                TopLeftX: 108,
+                                TopLeftY: 126,
+                                BottomRightX: 142,
+                                BottomRightY: 137,
+                                Alignment: "TopLeft",
+                                SpacingX: 0,
+                                SpacingY: 0,
+                                ImageIndex: 94,
+                                ImagesCount: 10
+                            },
+                            SuffixImageIndex: 77
+                        },
+                        UVCN: {
+                            X: 108,
+                            Y: 126,
+                            ImageIndex: 72,
+                            ImagesCount: 5
+                        },
+                        UVCN2: {
+                            X: 108,
+                            Y: 126,
+                            ImageIndex: 72,
+                            ImagesCount: 5
+                        }
                     }
                 },
                 StepsProgress: {
@@ -383,6 +445,16 @@ hmUI.createWidget(hmUI.widget.IMG_DATE,{month_startX: 6,month_startY: 142,month_
                         Y: 348,
                         ImageIndex: 64,
                         ImagesCount: 8
+                    },
+                    CircleScale: {
+                        CenterX: 76,
+                        CenterY: 387,
+                        RadiusX: 50,
+                        RadiusY: 50,
+                        StartAngle: 335,
+                        EndAngle: 25,
+                        Width: 5,
+                        Color: "0x2D92D2"
                     }
                 },
                 Status: {
@@ -472,6 +544,51 @@ hmUI.createWidget(hmUI.widget.IMG_DATE,{month_startX: 6,month_startY: 142,month_
                         Y: 320,
                         ImageIndex: 72,
                         ImagesCount: 8
+                    },
+                    Linear: {
+                        StartImageIndex: 134,
+                        Segments: [
+                            {
+                                X: 8,
+                                Y: 414
+                            },
+                            {
+                                X: 8,
+                                Y: 408
+                            },
+                            {
+                                X: 8,
+                                Y: 402
+                            },
+                            {
+                                X: 8,
+                                Y: 396
+                            },
+                            {
+                                X: 8,
+                                Y: 390
+                            },
+                            {
+                                X: 8,
+                                Y: 384
+                            },
+                            {
+                                X: 8,
+                                Y: 378
+                            },
+                            {
+                                X: 8,
+                                Y: 372
+                            },
+                            {
+                                X: 8,
+                                Y: 366
+                            },
+                            {
+                                X: 8,
+                                Y: 360
+                            }
+                        ]
                     }
                 },
                 CaloriesProgress: {
@@ -495,6 +612,8 @@ timeHourOnes = hmUI.createWidget(hmUI.widget.IMG, { x: 61, y: 88, src: 'images/1
 timeMinutesTens = hmUI.createWidget(hmUI.widget.IMG, { x: 2, y: 180, src: 'images/1.png', show_level: hmUI.show_level.ONLY_NORMAL })
 timeMinutesOnes = hmUI.createWidget(hmUI.widget.IMG, { x: 61, y: 180, src: 'images/1.png', show_level: hmUI.show_level.ONLY_NORMAL })
 hmUI.createWidget(hmUI.widget.IMG, {x: 70, y: 105, src: 'images/12.png', show_level: hmUI.show_level.ONLY_NORMAL});
+hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 0, y: 155, h_space: 0, font_array: ['images/120.png', 'images/121.png', 'images/122.png', 'images/123.png', 'images/124.png', 'images/125.png', 'images/126.png', 'images/127.png', 'images/128.png', 'images/129.png'], align_h: hmUI.align.RIGHT, type: hmUI.data_type.SUN_RISE, invalid_image: 'images/133.png', dot_image: 'images/130.png', w: 148, show_level: hmUI.show_level.ONLY_NORMAL})
+hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 0, y: 185, h_space: 0, font_array: ['images/120.png', 'images/121.png', 'images/122.png', 'images/123.png', 'images/124.png', 'images/125.png', 'images/126.png', 'images/127.png', 'images/128.png', 'images/129.png'], align_h: hmUI.align.RIGHT, type: hmUI.data_type.SUN_SET, invalid_image: 'images/133.png', dot_image: 'images/130.png', w: 148, show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 34, y: 328, h_space: 1, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.STEP, show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 34, y: 356, h_space: 1, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.CAL, unit_en: 'images/59.png', show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 34, y: 300, h_space: 1, font_array: ['images/11.png', 'images/12.png', 'images/13.png', 'images/14.png', 'images/15.png', 'images/16.png', 'images/17.png', 'images/18.png', 'images/19.png', 'images/20.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.HEART, invalid_image: 'images/21.png', show_level: hmUI.show_level.ONLY_NORMAL})
@@ -511,7 +630,10 @@ hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 0, y: 419, h_space: 1, font_array: 
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 0, y: 436, h_space: 1, font_array: ['images/68.png', 'images/69.png', 'images/70.png', 'images/71.png', 'images/72.png', 'images/73.png', 'images/74.png', 'images/75.png', 'images/76.png', 'images/77.png'], align_h: hmUI.align.CENTER_H, type: hmUI.data_type.WEATHER_LOW, unit_en: 'images/79.png', negative_image: 'images/78.png', w: 64, show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 118, y: 419, h_space: 1, font_array: ['images/132.png', 'images/133.png', 'images/134.png', 'images/135.png', 'images/136.png', 'images/137.png', 'images/138.png', 'images/139.png', 'images/140.png', 'images/141.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.HUMIDITY, show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 118, y: 436, h_space: 1, font_array: ['images/132.png', 'images/133.png', 'images/134.png', 'images/135.png', 'images/136.png', 'images/137.png', 'images/138.png', 'images/139.png', 'images/140.png', 'images/141.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.WIND, show_level: hmUI.show_level.ONLY_NORMAL})
+hmUI.createWidget(hmUI.widget.TEXT_IMG, { x: 108, y: 126, h_space: 0, font_array: ['images/94.png', 'images/95.png', 'images/96.png', 'images/97.png', 'images/98.png', 'images/99.png', 'images/100.png', 'images/101.png', 'images/102.png', 'images/103.png'], align_h: hmUI.align.LEFT, type: hmUI.data_type.UVI, unit_en: 'images/77.png', show_level: hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:34,y:348,image_array:['images/64.png', 'images/65.png', 'images/66.png', 'images/67.png', 'images/68.png', 'images/69.png', 'images/70.png', 'images/71.png'],image_length:8,type:hmUI.data_type.STEP,show_level:hmUI.show_level.ONLY_NORMAL})
+hmUI.createWidget(hmUI.widget.ARC_PROGRESS,{center_x:76,center_y:387,radius:50,start_angle:335,end_angle:25,line_width:5,color:0x2D92D2,type:hmUI.data_type.STEP,show_level:hmUI.show_level.ONLY_NORMAL})
+hmUI.createWidget(hmUI.widget.IMG_PROGRESS,{x:[8,8,8,8,8,8,8,8,8,8],y:[414,408,402,396,390,384,378,372,366,360],image_array:['images/134.png', 'images/135.png', 'images/136.png', 'images/137.png', 'images/138.png', 'images/139.png', 'images/140.png', 'images/141.png', 'images/142.png', 'images/143.png'],image_length:10,type:hmUI.data_type.HEART,show_level:hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:34,y:320,image_array:['images/72.png', 'images/73.png', 'images/74.png', 'images/75.png', 'images/76.png', 'images/77.png', 'images/78.png', 'images/79.png'],image_length:8,type:hmUI.data_type.HEART,show_level:hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:34,y:376,image_array:['images/80.png', 'images/81.png', 'images/82.png', 'images/83.png', 'images/84.png', 'images/85.png', 'images/86.png', 'images/87.png'],image_length:8,type:hmUI.data_type.CAL,show_level:hmUI.show_level.ONLY_NORMAL})
 hmUI.createWidget(hmUI.widget.IMG_STATUS,{x:90,y:30,src: 'images/22.png',type:hmUI.system_status.DISTURB,show_level:hmUI.show_level.ONLY_NORMAL})

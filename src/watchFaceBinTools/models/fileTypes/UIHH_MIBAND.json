@@ -112,12 +112,12 @@
       "5:DelimiterImage": "Image",
       "6:TimeDelimiterImage": "Image",
       "7:SunsetTimeNumber": "Number",
-      "8:SunsetTimeDelimiterImage": "imgid",
+      "8:SunsetTimeDelimiterImageIndex": "imgid",
       "9:SunriseTimeNumber": "Number",
-      "10:SunriseTimeDelimiterImage": "imgid",
+      "10:SunriseTimeDelimiterImageIndex": "imgid",
       "11:DrawingOrder": "bool",
-      "12:SunsetNoDataImage": "Image",
-      "13:SunriseNoDataImage": "Image"
+      "12:SunsetTimeNoDataImage": "Image",
+      "13:SunriseTimeNoDataImage": "Image"
     },
     "4:Activity": {
       "1:Steps": {

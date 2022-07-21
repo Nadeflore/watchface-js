@@ -37,10 +37,20 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
         result.push(`timeMinutesOnes = hmUI.createWidget(hmUI.widget.IMG, { x: ${time.Minutes.Ones.X + xOffset}, y: ${time.Minutes.Ones.Y}, src: 'images/${time.Minutes.Ones.ImageIndex}.png', show_level: hmUI.show_level.ONLY_NORMAL })`)
         updateCalls += `updateTime();`
 
-        const delimiterImage = time.DelimiterImage
+        const delimiterImage = time.DelimiterImage || time.TimeDelimiterImage
         if (delimiterImage) {
             result.push(`hmUI.createWidget(hmUI.widget.IMG, {x: ${delimiterImage.X + xOffset}, y: ${delimiterImage.Y}, src: 'images/${delimiterImage.ImageIndex}.png', show_level: hmUI.show_level.ONLY_NORMAL});`)
         }
+    }
+
+    const sunriseTime = parameters.Time?.SunriseTimeNumber
+    if (sunriseTime) {
+        result.push(createNumber(time, 'SUN_RISE', "SunriseTime"))
+    }
+
+    const sunsetTime = parameters.Time?.SunsetTimeNumber
+    if (sunsetTime) {
+        result.push(createNumber(time, 'SUN_SET', "SunsetTime"))
     }
 
     const steps = parameters.Activity?.Steps
@@ -186,19 +196,39 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
         result.push(createNumber(wind, 'WIND'))
     }
 
+    const uv = parameters.Weather?.UVIndex?.UV
+    if (uv) {
+        result.push(createNumber(uv, 'UVI'))
+    }
+
     const stepsProgressLine = parameters.StepsProgress?.LineScale
     if (stepsProgressLine) {
-        result.push(createProgress(stepsProgressLine, 'STEP'))
+        result.push(createProgressLine(stepsProgressLine, 'STEP'))
+    }
+
+    const stepsProgressCircle = parameters.StepsProgress?.CircleScale
+    if (stepsProgressCircle) {
+        result.push(createProgressCircle(stepsProgressCircle, 'STEP'))
+    }
+
+    const heartProgressLinear = parameters.HeartProgress?.Linear
+    if (heartProgressLinear) {
+        result.push(createProgressLinear(heartProgressLinear, 'HEART'))
     }
 
     const heartProgressLine = parameters.HeartProgress?.LineScale
     if (heartProgressLine) {
-        result.push(createProgress(heartProgressLine, 'HEART'))
+        result.push(createProgressLine(heartProgressLine, 'HEART'))
     }
 
     const caloriesProgressLine = parameters.CaloriesProgress?.LineScale
     if (caloriesProgressLine) {
-        result.push(createProgress(caloriesProgressLine, 'CAL'))
+        result.push(createProgressLine(caloriesProgressLine, 'CAL'))
+    }
+
+    const caloriesProgressLinear = parameters.CaloriesProgress?.Linear
+    if (caloriesProgressLinear) {
+        result.push(createProgressLinear(caloriesProgressLinear, 'CAL'))
     }
 
     const doNotDisturb = parameters.Status?.DoNotDisturb
@@ -239,9 +269,13 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
 
     const batteryIcon = parameters.Battery?.BatteryIcon
     if (batteryIcon) {
-        result.push(createProgress(batteryIcon, 'BATTERY'))
+        result.push(createProgressLine(batteryIcon, 'BATTERY'))
     }
 
+    const batteryLinear = parameters.Battery?.Linear
+    if (batteryLinear) {
+        result.push(createProgressLinear(batteryLinear, 'BATTERY'))
+    }
 
     if (updateCalls) {
         result.push(updateCalls)
@@ -252,12 +286,21 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
     return result.join('\n')
 }
 
-function createProgress(progress, type) {
+function createProgressLine(progress, type) {
     return `hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:${progress.X + xOffset},y:${progress.Y},image_array:${createImageArray(progress)},image_length:${progress.ImagesCount},type:hmUI.data_type.${type},show_level:hmUI.show_level.ONLY_NORMAL})`
 }
 
-function createNumber(param, type) {
-    const number = param.Number
+function createProgressLinear(progress, type) {
+    const { StartImageIndex, Segments } = progress
+    return `hmUI.createWidget(hmUI.widget.IMG_PROGRESS,{x:[${Segments.map(c => c.X + xOffset).join(',')}],y:[${Segments.map(c => c.Y).join(',')}],image_array:${createImageArray({ ImageIndex: StartImageIndex, ImagesCount: Segments.length })},image_length:${Segments.length},type:hmUI.data_type.${type},show_level:hmUI.show_level.ONLY_NORMAL})`
+}
+
+function createProgressCircle(progress, type) {
+    return `hmUI.createWidget(hmUI.widget.ARC_PROGRESS,{center_x:${progress.CenterX + xOffset},center_y:${progress.CenterY},radius:${progress.RadiusX},start_angle:${progress.StartAngle},end_angle:${progress.EndAngle},line_width:${progress.Width},color:${progress.Color},type:hmUI.data_type.${type},show_level:hmUI.show_level.ONLY_NORMAL})`
+}
+
+function createNumber(param, type = null, prefix = "") {
+    const number = param[`${prefix}Number`]
     let optionalParams = ''
     if (type) {
         optionalParams += `, type: hmUI.data_type.${type}`
@@ -265,11 +308,15 @@ function createNumber(param, type) {
     if (param.SuffixImageIndex) {
         optionalParams += `, unit_en: 'images/${param.SuffixImageIndex}.png'`
     }
+    if (param.SuffixImageIndexEN) {
+        optionalParams += `, unit_en: 'images/${param.SuffixImageIndexEN}.png'`
+    }
     if (param.NoDataImageIndex) {
         optionalParams += `, invalid_image: 'images/${param.NoDataImageIndex}.png'`
     }
-    if (param.NoDataImage) {
-        optionalParams += `, invalid_image: 'images/${param.NoDataImage.ImageIndex}.png'`
+    const noDataImage = param[`${prefix}NoDataImage`]
+    if (noDataImage) {
+        optionalParams += `, invalid_image: 'images/${noDataImage.ImageIndex}.png'`
     }
     if (param.KmSuffixImageIndex) {
         optionalParams += `, unit_en: 'images/${param.KmSuffixImageIndex}.png'`
@@ -283,8 +330,10 @@ function createNumber(param, type) {
     if (param.MinusImageIndex) {
         optionalParams += `, negative_image: 'images/${param.MinusImageIndex}.png'`
     }
-    if (param.DelimiterImageIndex) {
-        optionalParams += `, dot_image: 'images/${param.DelimiterImageIndex}.png'`
+
+    const delimiterImageIndex = param[`${prefix}DelimiterImageIndex`]
+    if (delimiterImageIndex) {
+        optionalParams += `, dot_image: 'images/${delimiterImageIndex}.png'`
     }
 
     if (type == "ALARM_CLOCK") {
