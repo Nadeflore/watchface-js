@@ -7,11 +7,12 @@
     "./previewGenerator": "./dist/watchFaceBinTools/previewGenerator.js",
     "./watchFaceBinParser": "./dist/watchFaceBinTools/watchFaceBinParser.js"
   },
+  "bin": {
+    "wfjs": "./dist/commands/index.js"
+  },
   "scripts": {
     "test": "jest",
-    "build": "babel src -d dist --copy-files",
-    "convert2tga": "babel-node src/convertPngToTga.js",
-    "convertBand6To7": "babel-node src/convertBand6To7.js"
+    "build": "babel src -d dist --copy-files"
   },
   "author": "Flore",
   "license": "GPL",
@@ -23,6 +24,7 @@
     "jest": "^28.1.2"
   },
   "dependencies": {
+    "commander": "^9.4.0",
     "jszip": "^3.10.0",
     "pngjs": "^6.0.0"
   }

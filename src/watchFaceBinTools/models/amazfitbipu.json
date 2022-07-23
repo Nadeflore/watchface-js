@@ -1,5 +1,6 @@
 {
-    "name": "Amazfit Bip U",
+    "id": "amazfitbipu",
+    "name": "Amazfit Bip U (Untested)",
     "screen": {
         "width": 302,
         "height": 320,

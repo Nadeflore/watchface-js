@@ -1,5 +1,6 @@
 {
-    "name": "Amazfit GTS 2 mini",
+    "id": "amazfitgts2mini",
+    "name": "Amazfit GTS 2 mini (Untested)",
     "screen": {
         "width": 306,
         "height": 354,

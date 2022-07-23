@@ -1,5 +1,6 @@
 {
-    "name": "Amazfit GTR 47mm",
+    "id": "amazfitgtr47",
+    "name": "Amazfit GTR 47mm (Untested)",
     "screen": {
         "width": 454,
         "height": 454,

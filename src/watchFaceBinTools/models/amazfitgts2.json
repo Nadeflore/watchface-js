@@ -1,5 +1,6 @@
 {
-    "name": "Amazfit GTS 2",
+    "id": "amazfitgts2",
+    "name": "Amazfit GTS 2 (Untested)",
     "screen": {
         "width": 348,
         "height": 442,

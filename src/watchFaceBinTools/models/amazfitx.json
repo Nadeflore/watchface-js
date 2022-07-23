@@ -1,5 +1,6 @@
 {
-    "name": "Amazfit X",
+    "id": "amazfitx",
+    "name": "Amazfit X (Untested)",
     "screen": {
         "width": 207,
         "height": 640,

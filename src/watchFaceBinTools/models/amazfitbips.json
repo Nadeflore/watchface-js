@@ -1,5 +1,6 @@
 {
-    "name": "Amazfit Bip S",
+    "id": "amazfitbips",
+    "name": "Amazfit Bip S (Untested)",
     "screen": {
         "width": 176,
         "height": 176,
