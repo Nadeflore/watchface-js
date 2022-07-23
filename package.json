@@ -1,10 +1,15 @@
 {
-  "name": "watch-face-js",
+  "name": "watchface-js",
   "version": "1.0.0",
-  "description": "",
+  "description": "A library of tools for huami watchfaces",
   "main": "bin/index.js",
+  "exports": {
+    "./previewGenerator": "./dist/watchFaceBinTools/previewGenerator.js",
+    "./watchFaceBinParser": "./dist/watchFaceBinTools/watchFaceBinParser.js"
+  },
   "scripts": {
     "test": "jest",
+    "build": "babel src -d dist --copy-files",
     "convert2tga": "babel-node src/convertPngToTga.js",
     "convertBand6To7": "babel-node src/convertBand6To7.js"
   },
