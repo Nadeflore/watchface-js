@@ -186,6 +186,11 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
         }
     }
 
+    const airQualityIcon = parameters.Weather?.AirQuality?.Icon
+    if (airQualityIcon) {
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_LEVEL,{x:${airQualityIcon.X + xOffset},y:${airQualityIcon.Y},image_array:${createWeatherArray(airQualityIcon)},image_length:${airQualityIcon.ImagesCount},type:hmUI.data_type.AQI,show_level:hmUI.show_level.ONLY_NORMAL})`)
+    }
+
     const humidity = parameters.Weather?.Humidity
     if (humidity) {
         result.push(createNumber(humidity, 'HUMIDITY'))

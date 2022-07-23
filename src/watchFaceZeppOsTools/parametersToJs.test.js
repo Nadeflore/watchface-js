@@ -384,6 +384,14 @@ hmUI.createWidget(hmUI.widget.IMG_DATE,{month_startX: 6,month_startY: 142,month_
                             }
                         }
                     },
+                    AirQuality: {
+                        Icon: {
+                            X: 8,
+                            Y: 120,
+                            ImageIndex: 127,
+                            ImagesCount: 5
+                        }
+                    },
                     Humidity: {
                         Number: {
                             TopLeftX: 118,
