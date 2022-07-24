@@ -70,7 +70,7 @@ export function parseWatchFaceBin(buffer, fileStructureInfo) {
     const parameterBufferSize = header.getUint32(parameterBufferSizePosition, true)
     const parametersInfoSize = header.getUint32(parametersInfoSizePosition, true)
 
-    console.debug(`Read parameters info ${parameterBufferSize}:${parametersInfoSize}`)
+    // console.debug(`Read parameters info ${parameterBufferSize}:${parametersInfoSize}`)
     // Read parameters info
     const parametersInfo = parseParameters(new Uint8Array(buffer, offset, parametersInfoSize), fileStructureInfo.valueBitSize)
 
@@ -87,7 +87,7 @@ export function parseWatchFaceBin(buffer, fileStructureInfo) {
     for (const [key, value] of Object.entries(parametersInfo)) {
         const parameterOffset = value["1"] || 0
         const parameterSize = value["2"]
-        console.debug(`Read parameter ${key}, ${parameterOffset}:${parameterSize}`)
+        // console.debug(`Read parameter ${key}, ${parameterOffset}:${parameterSize}`)
         parameters[key] = parseParameters(new Uint8Array(buffer, offset + parameterOffset, parameterSize), fileStructureInfo.valueBitSize)
     }
 

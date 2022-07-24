@@ -155,10 +155,10 @@ export function writeImageAutoDetectBestFormat(pixels, width, height) {
 
 
 	if (indexedColorImage != undefined && indexedColorImage.byteLength < trueColorImage.byteLength) {
-		console.log("Selected Indexed colors")
+		// console.log("Selected Indexed colors")
 		return indexedColorImage
 	} else {
-		console.log(`Selected true color ${colorDepth} bits`)
+		// console.log(`Selected true color ${colorDepth} bits`)
 		return trueColorImage
 	}
 }

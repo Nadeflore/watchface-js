@@ -1,8 +1,7 @@
 import * as fs from 'fs';
 import { PNG } from 'pngjs'
 import { writeWatchFaceBin, getAvailableModels } from '../watchFaceBinTools/watchFaceBinParser'
-
-const OUTPUT = "output_watchface.bin"
+import { checkInputGetOutput } from './utils';
 
 export default function writeBin({ input, model }) {
     const models = getAvailableModels()
@@ -12,6 +11,8 @@ export default function writeBin({ input, model }) {
         console.error(`Unknown watch model ${model}`)
         return
     }
+
+    const output = checkInputGetOutput(input, "_packed.bin")
 
     console.log("Reading " + input)
 
@@ -43,7 +44,7 @@ export default function writeBin({ input, model }) {
 
     const outputData = writeWatchFaceBin(watchfaceJson, images, modelDescriptor.fileType)
 
-    fs.writeFileSync(OUTPUT, outputData)
+    fs.writeFileSync(output, outputData)
 
-    console.log("Written to " + OUTPUT)
+    console.log("Written to " + output)
 }

@@ -40,4 +40,8 @@ program
     .description('Write a watchface bin file from a json file and images files')
     .action(writeBin)
 
-program.parse()
+try {
+    program.parse()
+} catch (e) {
+    console.error("Error: " + e.message)
+}
