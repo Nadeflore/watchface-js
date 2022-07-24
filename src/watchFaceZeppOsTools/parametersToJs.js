@@ -89,12 +89,25 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
             dateParams.push(`month_space: ${month.SpacingX}`)
             dateParams.push(`month_zero: ${parameters.Date.MonthAndDayAndYear.TwoDigitsMonth}`)
             dateParams.push(`month_en_array: ${createImageArray(month)}`)
+            dateParams.push(`month_sc_array: ${createImageArray(month)}`)
+            dateParams.push(`month_tc_array: ${createImageArray(month)}`)
         } else {
             const monthsEn = dateSeparate.MonthsEN
-            if (monthsEn) {
-                dateParams.push(`month_startX: ${monthsEn.X + xOffset}`)
-                dateParams.push(`month_startY: ${monthsEn.Y}`)
-                dateParams.push(`month_en_array: ${createImageArray(monthsEn)}`)
+            const monthsCn = dateSeparate.MonthsCN
+            const monthChar = monthsEn || monthsCn
+            if (monthChar) {
+                dateParams.push(`month_startX: ${monthChar.X + xOffset}`)
+                dateParams.push(`month_startY: ${monthChar.Y}`)
+
+                if (monthsEn) {
+                    dateParams.push(`month_en_array: ${createImageArray(monthsEn)}`)
+                }
+
+                if (monthsCn) {
+                    dateParams.push(`month_sc_array: ${createImageArray(monthsCn)}`)
+                    dateParams.push(`month_tc_array: ${createImageArray(monthsCn)}`)
+                }
+
                 dateParams.push(`month_is_character: true`)
             }
         }
@@ -107,6 +120,8 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
             dateParams.push(`day_space: ${day.SpacingX}`)
             dateParams.push(`day_zero: ${parameters.Date.MonthAndDayAndYear.TwoDigitsDay}`)
             dateParams.push(`day_en_array: ${createImageArray(day)}`)
+            dateParams.push(`day_sc_array: ${createImageArray(day)}`)
+            dateParams.push(`day_tc_array: ${createImageArray(day)}`)
         }
 
         result.push(`hmUI.createWidget(hmUI.widget.IMG_DATE,{${dateParams.join(',')},show_level: hmUI.show_level.ONLY_NORMAL})`)
@@ -125,7 +140,11 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
             dateParams.push(`year_align: ${getAlignHAndPosition(number).alignment}`)
             dateParams.push(`year_space: ${number.SpacingX}`)
             dateParams.push(`year_unit_en:'images/${dateOneLine.DelimiterImageIndex}.png'`)
+            dateParams.push(`year_unit_sc:'images/${dateOneLine.DelimiterImageIndex}.png'`)
+            dateParams.push(`year_unit_tc:'images/${dateOneLine.DelimiterImageIndex}.png'`)
             dateParams.push(`year_en_array: ${createImageArray(number)}`)
+            dateParams.push(`year_sc_array: ${createImageArray(number)}`)
+            dateParams.push(`year_tc_array: ${createImageArray(number)}`)
             dateParams.push(`year_zero: true`)
             dateParams.push(`month_follow: true`)
         } else {
@@ -137,25 +156,34 @@ export function convertParametersToJavascript(parameters, xOffsetParam = 0) {
         dateParams.push(`month_space: ${number.SpacingX}`)
         dateParams.push(`month_zero: ${parameters.Date.MonthAndDayAndYear.TwoDigitsMonth}`)
         dateParams.push(`month_unit_en:'images/${dateOneLine.DelimiterImageIndex}.png'`)
+        dateParams.push(`month_unit_sc:'images/${dateOneLine.DelimiterImageIndex}.png'`)
+        dateParams.push(`month_unit_tc:'images/${dateOneLine.DelimiterImageIndex}.png'`)
         dateParams.push(`month_en_array: ${createImageArray(number)}`)
+        dateParams.push(`month_sc_array: ${createImageArray(number)}`)
+        dateParams.push(`month_tc_array: ${createImageArray(number)}`)
 
         dateParams.push(`day_follow: true`)
         dateParams.push(`day_align: ${getAlignHAndPosition(number).alignment}`)
         dateParams.push(`day_space: ${number.SpacingX}`)
         dateParams.push(`day_zero: ${parameters.Date.MonthAndDayAndYear.TwoDigitsDay}`)
         dateParams.push(`day_en_array: ${createImageArray(number)}`)
+        dateParams.push(`day_sc_array: ${createImageArray(number)}`)
+        dateParams.push(`day_tc_array: ${createImageArray(number)}`)
 
         result.push(`hmUI.createWidget(hmUI.widget.IMG_DATE,{${dateParams.join(',')},show_level: hmUI.show_level.ONLY_NORMAL})`)
     }
 
     const dayAmPm = parameters.Date?.DayAmPm
     if (dayAmPm) {
-        result.push(`hmUI.createWidget(hmUI.widget.IMG_TIME, {am_x:${dayAmPm.X + xOffset},am_y:${dayAmPm.Y},pm_x:${dayAmPm.X + xOffset},pm_y:${dayAmPm.Y},am_en_path:'images/${dayAmPm.ImageIndexAMEN}.png',pm_en_path:'images/${dayAmPm.ImageIndexPMEN}.png',show_level: hmUI.show_level.ONLY_NORMAL})`)
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_TIME, {am_x:${dayAmPm.X + xOffset},am_y:${dayAmPm.Y},pm_x:${dayAmPm.X + xOffset},pm_y:${dayAmPm.Y},am_en_path:'images/${dayAmPm.ImageIndexAMEN}.png',pm_en_path:'images/${dayAmPm.ImageIndexPMEN}.png',am_sc_path:'images/${dayAmPm.ImageIndexAMCN}.png',pm_sc_path:'images/${dayAmPm.ImageIndexPMCN}.png',show_level: hmUI.show_level.ONLY_NORMAL})`)
     }
 
     const enWeekDays = parameters.Date?.ENWeekDays
-    if (enWeekDays) {
-        result.push(`hmUI.createWidget(hmUI.widget.IMG_WEEK, {x:${enWeekDays.X + xOffset},y:${enWeekDays.Y},week_en:${createImageArray(enWeekDays)},show_level: hmUI.show_level.ONLY_NORMAL})`)
+    const tcWeekDays = parameters.Date?.CNWeekDays
+    const scWeekDays = parameters.Date?.CN2WeekDays
+    const weekDays = enWeekDays || tcWeekDays || scWeekDays
+    if (weekDays) {
+        result.push(`hmUI.createWidget(hmUI.widget.IMG_WEEK, {x:${weekDays.X + xOffset},y:${weekDays.Y},week_en:${createImageArray(enWeekDays)},week_sc:${createImageArray(scWeekDays)},week_tc:${createImageArray(tcWeekDays)},show_level: hmUI.show_level.ONLY_NORMAL})`)
     }
 
     const weatherIcon = parameters.Weather?.Icon?.CustomIcon
@@ -305,9 +333,17 @@ function createNumber(param, type = null, prefix = "") {
     }
     if (param.SuffixImageIndex) {
         optionalParams += `, unit_en: 'images/${param.SuffixImageIndex}.png'`
+        optionalParams += `, unit_sc: 'images/${param.SuffixImageIndex}.png'`
+        optionalParams += `, unit_tc: 'images/${param.SuffixImageIndex}.png'`
     }
     if (param.SuffixImageIndexEN) {
         optionalParams += `, unit_en: 'images/${param.SuffixImageIndexEN}.png'`
+    }
+    if (param.SuffixImageIndexCN) {
+        optionalParams += `, unit_tc: 'images/${param.SuffixImageIndexCN}.png'`
+    }
+    if (param.SuffixImageIndexCN2) {
+        optionalParams += `, unit_sc: 'images/${param.SuffixImageIndexCN2}.png'`
     }
     if (param.NoDataImageIndex) {
         optionalParams += `, invalid_image: 'images/${param.NoDataImageIndex}.png'`
@@ -318,9 +354,13 @@ function createNumber(param, type = null, prefix = "") {
     }
     if (param.KmSuffixImageIndex) {
         optionalParams += `, unit_en: 'images/${param.KmSuffixImageIndex}.png'`
+        optionalParams += `, unit_sc: 'images/${param.KmSuffixImageIndex}.png'`
+        optionalParams += `, unit_tc: 'images/${param.KmSuffixImageIndex}.png'`
     }
     if (param.MilesSuffixImageIndex) {
         optionalParams += `, imperial_unit_en: 'images/${param.MilesSuffixImageIndex}.png'`
+        optionalParams += `, imperial_unit_sc: 'images/${param.MilesSuffixImageIndex}.png'`
+        optionalParams += `, imperial_unit_tc: 'images/${param.MilesSuffixImageIndex}.png'`
     }
     if (param.DecimalPointImageIndex) {
         optionalParams += `, dot_image: 'images/${param.DecimalPointImageIndex}.png'`
@@ -349,6 +389,9 @@ function createNumber(param, type = null, prefix = "") {
 }
 
 function createImageArray(arrayInfo) {
+    if (!arrayInfo) {
+        return
+    }
     let result = []
     for (let i = 0; i < arrayInfo.ImagesCount; i++) {
         result.push(`'images/${arrayInfo.ImageIndex + i}.png'`)
