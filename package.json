@@ -1,8 +1,21 @@
 {
   "name": "watchface-js",
-  "version": "1.0.0",
-  "description": "A library of tools for huami watchfaces",
-  "main": "bin/index.js",
+  "version": "0.0.1",
+  "description": "A library and tools for huami watchfaces",
+  "author": "Nadeflore",
+  "license": "GPL-3.0-only",
+  "homepage": "https://github.com/Nadeflore/watchface-js/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nadeflore/watchface-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Nadeflore/watchface-js/issues"
+  },
+  "keywords": [
+    "watch",
+    "watchface"
+  ],
   "exports": {
     "./previewGenerator": "./dist/watchFaceBinTools/previewGenerator.js",
     "./watchFaceBinParser": "./dist/watchFaceBinTools/watchFaceBinParser.js"
@@ -14,8 +27,6 @@
     "test": "jest",
     "build": "babel src -d dist --copy-files"
   },
-  "author": "Flore",
-  "license": "GPL",
   "devDependencies": {
     "@babel/cli": "^7.18.6",
     "@babel/core": "^7.18.6",
