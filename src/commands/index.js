@@ -2,6 +2,7 @@
 
 import { program } from 'commander'
 
+import { version } from '../../package.json';
 import convertBand6To7 from './convertBand6To7'
 import convertPngToTga from './convertPngToTga'
 import listModels from './listModels'
@@ -39,6 +40,8 @@ program
     .requiredOption('-m, --model <model>', 'Watch model, use listModels to list supported models')
     .description('Write a watchface bin file from a json file and images files')
     .action(writeBin)
+
+program.version(version)
 
 try {
     program.parse()
