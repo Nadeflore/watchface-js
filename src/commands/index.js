@@ -14,6 +14,7 @@ program
     .description('Convert a mi band 6 watchface to a mi band 7 watchface')
     .requiredOption('-i, --input <path>', 'Path to a mi band 6 watchface bin file')
     .option('-m, --mask', 'Add a mask to restrict view to the mi band 6 screen area', false)
+    .option('-a --appid <number>', 'The App Id of the generated watchface. If unset, a random id will be generated.')
     .action(convertBand6To7)
 
 program

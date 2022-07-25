@@ -8,10 +8,25 @@ import { maskFile } from './resources/mask'
 /**
  * Convert a mi band 6 watchface bin file to a band 7 zip file
  * @param {Uint8Array} buffer An arrayBuffer of mi band a watchface bin file
+ * @param {boolean} addMask When true as mask is added to restrict view to mi band 6 screen
+ * @param {number} appId Id to use for the watchface, if not set a random id will be generated
+ * @param {number} xOffset offset to shit x coordinates, default to center a mi band 6 to mi band 7 screen
  * @returns {Promise} A promise which resolves to an Uint8Array of a band 7 zip file
  */
-export function convertMiBand6to7(buffer, addMask = true, xOffset = (192 - 152) / 2) {
+export function convertMiBand6to7(buffer, addMask = true, appId, xOffset = (192 - 152) / 2) {
    const { parameters, images } = parseWatchFaceBin(buffer, mibandFileStructure)
+
+   return convertToBand7(parameters, images, addMask, appId, xOffset)
+}
+
+export function convertToBand7(parameters, images, addMask, appId, xOffset) {
+   if (appId) {
+      if (!appId.match(/^\d{,8}$/)) {
+         throw new Error(`Not a valid appId : ${appId}`)
+      }
+   } else {
+      appId = Math.round(Math.random() * 1000000)
+   }
 
    const previewImages = [parameters.Background?.PreviewEN?.ImageIndex, parameters.Background?.PreviewCN?.ImageIndex, parameters.Background?.PreviewCN2?.ImageIndex]
 
@@ -23,8 +38,7 @@ export function convertMiBand6to7(buffer, addMask = true, xOffset = (192 - 152) 
       return writeImageAutoDetectBestFormat(img.pixels, img.width, img.height)
    })
 
-   const indexFile =
-      `try {
+   const indexFile = `try {
     (() => {
       var __$$app$$__ = __$$hmAppManager$$__.currentApp;
       var __$$module$$__ = __$$app$$__.current;
@@ -101,7 +115,7 @@ export function convertMiBand6to7(buffer, addMask = true, xOffset = (192 - 152) 
    const appFile = `{
     "configVersion":"v2",
     "app":{
-       "appId":25960012,
+       "appId":${appId},
        "appName":"Converted watchface",
        "appType":"watchface",
        "version":{
