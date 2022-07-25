@@ -13,13 +13,13 @@ import { maskFile } from './resources/mask'
  * @param {number} xOffset offset to shit x coordinates, default to center a mi band 6 to mi band 7 screen
  * @returns {Promise} A promise which resolves to an Uint8Array of a band 7 zip file
  */
-export function convertMiBand6to7(buffer, addMask = true, appId, xOffset = (192 - 152) / 2) {
+export function convertMiBand6to7(buffer, addMask = true, appId, xOffset) {
    const { parameters, images } = parseWatchFaceBin(buffer, mibandFileStructure)
 
    return convertToBand7(parameters, images, addMask, appId, xOffset)
 }
 
-export function convertToBand7(parameters, images, addMask, appId, xOffset) {
+export function convertToBand7(parameters, images, addMask, appId, xOffset = (192 - 152) / 2) {
    if (appId) {
       if (!appId.match(/^\d{,8}$/)) {
          throw new Error(`Not a valid appId : ${appId}`)
@@ -288,7 +288,7 @@ export function convertToBand7(parameters, images, addMask, appId, xOffset) {
  */
 function changeWidthKeepRatio(img, newWidth) {
    const result = new Uint8ClampedArray(img.height * newWidth * 4);
-   const paddingWidth = Math.round(newWidth - img.width) / 2
+   const paddingWidth = Math.round((newWidth - img.width) / 2)
    for (let x = 0; x < img.width * 4; x++) {
       for (let y = 0; y < img.height; y++) {
          result[((x + paddingWidth * 4) + y * newWidth * 4)] = img.pixels[(x + y * img.width * 4)]
