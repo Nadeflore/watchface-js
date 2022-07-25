@@ -18,7 +18,8 @@
   ],
   "exports": {
     "./previewGenerator": "./dist/watchFaceBinTools/previewGenerator.js",
-    "./watchFaceBinParser": "./dist/watchFaceBinTools/watchFaceBinParser.js"
+    "./watchFaceBinParser": "./dist/watchFaceBinTools/watchFaceBinParser.js",
+    "./binToZeppOsConverter": "./dist/watchFaceZeppOsTools/binToZeppOsConverter.js"
   },
   "bin": {
     "wfjs": "./dist/commands/index.js"
