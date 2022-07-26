@@ -77,3 +77,5 @@ function readWatchFaceFile(buffer) {
     console.log(parsedParameters)
 }
 ```
+
+For more a more complete example, you can look at the source code of [Watchface web editor](https://github.com/Nadeflore/watchface-web-editor)
