@@ -3,7 +3,7 @@ A javascript library and tools for huami watchfaces
 
 ## Supported watch models
 
-- Xiaomi Mi Band 7 (Only for converting from miband 6)
+- Xiaomi Mi Band 7 (Only for converting from miband 6 and converting images)
 - Xiaomi Mi Band 6
 - Xiaomi Mi Band 5
 - Xiaomi Mi Band 4
@@ -44,6 +44,12 @@ wfjs writeBin -i watchfacefolder -m miband5
 
 ```bash
 wfjs convertBand6To7 -i mywatchface.bin
+```
+
+### Converting png to zepp os tga (for use with mi band 7 watchface)
+
+```bash
+wfjs convertPngToTga -i picture.png
 ```
 
 ### For more details on how to use command line tools
