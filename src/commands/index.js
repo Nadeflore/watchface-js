@@ -5,6 +5,7 @@ import { program } from 'commander'
 import { version } from '../../package.json';
 import convertBand6To7 from './convertBand6To7'
 import convertPngToTga from './convertPngToTga'
+import convertTgaToPng from './convertTgaToPng'
 import listModels from './listModels'
 import readBin from './readBin'
 import writeBin from './writeBin'
@@ -22,6 +23,12 @@ program
     .description('Convert a png image to a zepp os compatible tga image')
     .requiredOption('-i, --input <path>', 'Path to a png image')
     .action(convertPngToTga)
+
+program
+    .command('convertTgaToPng')
+    .description('Convert a zepp os tga image to a png image')
+    .requiredOption('-i, --input <path>', 'Path to a tga image')
+    .action(convertTgaToPng)
 
 program
     .command('listModels')

@@ -19,7 +19,8 @@
   "exports": {
     "./previewGenerator": "./dist/watchFaceBinTools/previewGenerator.js",
     "./watchFaceBinParser": "./dist/watchFaceBinTools/watchFaceBinParser.js",
-    "./binToZeppOsConverter": "./dist/watchFaceZeppOsTools/binToZeppOsConverter.js"
+    "./binToZeppOsConverter": "./dist/watchFaceZeppOsTools/binToZeppOsConverter.js",
+    "./tgaReaderWriter": "./dist/watchFaceZeppOsTools/tgaReaderWriter.js"
   },
   "bin": {
     "wfjs": "./dist/commands/index.js"

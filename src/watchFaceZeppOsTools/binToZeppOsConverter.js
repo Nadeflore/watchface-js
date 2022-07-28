@@ -2,7 +2,7 @@ import JSZip from 'jszip'
 import { parseWatchFaceBin } from '../watchFaceBinTools/watchFaceBinParser'
 import mibandFileStructure from '../watchFaceBinTools/models/fileTypes/UIHH_MIBAND.json'
 import { convertParametersToJavascript } from './parametersToJs'
-import { writeImageAutoDetectBestFormat } from './tgaWriter'
+import { writeImageAutoDetectBestFormat } from './tgaReaderWriter'
 import { maskFile } from './resources/mask'
 
 /**

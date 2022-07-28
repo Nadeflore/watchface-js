@@ -176,3 +176,110 @@ function hasAlphaChannel(pixels) {
 	}
 	return false
 }
+
+/**
+ * 
+ * @param {ArrayBuffer} dataBuffer Binary data of a tga image
+ * @returns {{width: number, height: number, pixels: Uint8ClampedArray, bitsPerPixel: number}} Object containing width height and pixel data in rgba form
+ */
+export function readImage(dataBuffer) {
+	const dataView = new DataView(dataBuffer)
+
+	const idLength = dataView.getUint8(0) // ID length
+	const colorMap = dataView.getUint8(1) // Color map
+	const imageType = dataView.getUint8(2) // Image type
+	const colorMapIndex = dataView.getUint16(3, true) // Color map index
+	const colorMapLength = dataView.getUint16(5, true) // Color map length
+	const colorMapEntrySize = dataView.getUint8(7) // Color map entry size
+	const xOrigin = dataView.getUint16(8, true) // x origin
+	const yOrigin = dataView.getUint16(10, true) // y origin
+	const width = dataView.getUint16(12, true) // Width
+	const height = dataView.getUint16(14, true) // Height
+	const bitsPerPixel = dataView.getUint8(16) // Bits per pixel
+	const orientationFlags = dataView.getUint8(17) // Orientation flag
+	const signature = dataView.getUint32(18) // Signature ?
+
+	if (xOrigin != 0 || yOrigin != 0 || (orientationFlags & 0xF0) != 0x20) {
+		throw new Error(`Unsuported image origin or orientation`)
+	}
+
+
+	const headerSize = 18 + idLength
+	const bytePerPixel = bitsPerPixel / 8
+
+	let actualWidth = width
+	if (idLength == 0x2E && signature == 0x534F4D48) {
+		actualWidth = dataView.getUint16(22, true) // Actual width (may be different in case of padding)
+	}
+
+	let paletteSize = 0
+	let palette = []
+	if (colorMap) {
+		if (imageType != 1 || colorMapIndex != 0 || colorMapEntrySize != 32) {
+			throw new Error(`Unsuported image type`)
+		}
+
+		// Read palette
+		for (let i = 0; i < colorMapLength; i++) {
+			const color = {
+				blue: dataView.getUint8(headerSize + i * 4),
+				green: dataView.getUint8(headerSize + i * 4 + 1),
+				red: dataView.getUint8(headerSize + i * 4 + 2),
+				alpha: dataView.getUint8(headerSize + i * 4 + 3),
+			}
+			palette.push(color)
+		}
+
+		paletteSize = colorMapLength * 4
+	} else {
+		if (imageType != 2) {
+			throw new Error(`Unsuported image type`)
+		}
+
+	}
+
+	// Read pixel data
+	const pixels = new Uint8ClampedArray(4 * actualWidth * height);
+	for (let y = 0; y < height; y++) {
+		for (let x = 0; x < width; x++) {
+			// read pixel color info
+			let red;
+			let green;
+			let blue;
+			let alpha = 0xFF
+			if (colorMap) {
+				let colorId = dataView.getUint8(headerSize + paletteSize + (y * width) + x)
+				const color = palette[colorId]
+				red = color.red
+				green = color.green
+				blue = color.blue
+				alpha = color.alpha
+			} else {
+				const pixelPosition = headerSize + (y * bytePerPixel * width) + (x * bytePerPixel)
+				if (bytePerPixel == 4) {
+					// color is 32 bit bgra(8:8:8:8)
+					blue = dataView.getUint8(pixelPosition)
+					green = dataView.getUint8(pixelPosition + 1)
+					red = dataView.getUint8(pixelPosition + 2)
+					alpha = dataView.getUint8(pixelPosition + 3)
+				} else {
+					const rgba = dataView.getUint16(pixelPosition, true)
+					// color is 16bit (5:6:5) rgb
+					red = (rgba & 0xF800) >> 8
+					green = (rgba & 0x07E0) >> 3
+					blue = (rgba & 0x001F) << 3
+				}
+			}
+
+			if (x < actualWidth) {
+				const pixelPositionInResultArray = (y * actualWidth + x) * 4
+				pixels[pixelPositionInResultArray] = red
+				pixels[pixelPositionInResultArray + 1] = green
+				pixels[pixelPositionInResultArray + 2] = blue
+				pixels[pixelPositionInResultArray + 3] = alpha
+			}
+		}
+	}
+
+	return { pixels, width: actualWidth, height, bitsPerPixel }
+}

@@ -1,7 +1,7 @@
 import { info } from 'console';
 import * as fs from 'fs';
 import { PNG } from 'pngjs'
-import { writeImage, writeImageAutoDetectBestFormat, writeImageIndexed } from '../watchFaceZeppOsTools/tgaWriter'
+import { writeImage, writeImageAutoDetectBestFormat, writeImageIndexed } from '../watchFaceZeppOsTools/tgaReaderWriter'
 import { checkInputGetOutput } from './utils';
 
 export default function convertPngToTga({ input }) {
