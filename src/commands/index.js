@@ -22,6 +22,7 @@ program
     .command('convertPngToTga')
     .description('Convert a png image to a zepp os compatible tga image')
     .requiredOption('-i, --input <path>', 'Path to a png image')
+    .option('-e --extension <extension>', 'Extension to use for the output file', 'tga')
     .action(convertPngToTga)
 
 program

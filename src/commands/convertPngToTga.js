@@ -4,8 +4,8 @@ import { PNG } from 'pngjs'
 import { writeImage, writeImageAutoDetectBestFormat, writeImageIndexed } from '../watchFaceZeppOsTools/tgaReaderWriter'
 import { checkInputGetOutput } from './utils';
 
-export default function convertPngToTga({ input }) {
-  const output = checkInputGetOutput(input, ".tga")
+export default function convertPngToTga({ input, extension }) {
+  const output = checkInputGetOutput(input, `.${extension}`)
 
   console.log("Converting " + input)
 
