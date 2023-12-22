@@ -1,4 +1,4 @@
-import { parseImage, parseCompressedImage, writeImage } from './imageParser'
+import { parseImage, parseCompressedImage, writeImage, writeImage24Bits } from './imageParser'
 
 describe('parseImage()', () => {
     it('parse 32 bit image', () => {
@@ -331,9 +331,9 @@ describe('parseImage()', () => {
     })
 })
 
-describe('writeImage()', () => {
+describe('writeImage24bit()', () => {
     it('write 24 bit abgr image', () => {
-        expect(new Uint8Array(writeImage(new Uint8ClampedArray([
+        expect(new Uint8Array(writeImage24Bits(new Uint8ClampedArray([
             0x88, 0x84, 0x48, 0xFF - 0xBC, // 1st pixel
             0x90, 0x44, 0x20, 0xFF - 0x88, // 2nd pixel
         ]), 2, 1))).toStrictEqual(

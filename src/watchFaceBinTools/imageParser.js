@@ -265,6 +265,26 @@ export function parseCompressedImage(dataBuffer) {
  * @returns {ArrayBuffer} The resulting bitmap file data
  */
 export function writeImage(pixels, width, height) {
+	try {
+		// attempts 8 bits per pixel indexed image
+		return writeImageIndexedColors(pixels, width, height, 8);
+	} catch (e) {
+		if (e instanceof ImageNotSupportedError) {
+			// Default to 24 bits
+			return writeImage24Bits(pixels, width, height);
+		}
+		throw e;
+	}
+}
+
+/**
+ * 
+ * @param {Uint8ClampedArray} pixels Pixels data in rgba format
+ * @param {number} width 
+ * @param {number} height 
+ * @returns {ArrayBuffer} The resulting bitmap file data
+ */
+export function writeImage24Bits(pixels, width, height) {
 	const bitsPerPixel = 24
 	const bytePerPixel = bitsPerPixel / 8
 
@@ -305,4 +325,96 @@ export function writeImage(pixels, width, height) {
 	}
 
 	return dataView.buffer
+}
+
+/**
+ * 
+ * @param {Uint8ClampedArray} pixels Pixels data in rgba format
+ * @param {number} width 
+ * @param {number} height
+ * @param {number} bitsPerPixel Should be 1, 2, 4 or 8
+ * @returns {ArrayBuffer} The resulting bitmap file data
+ */
+export function writeImageIndexedColors(pixels, width, height, bitsPerPixel) {
+	const paletteColorsCount = Math.pow(2, bitsPerPixel);
+	const paletteSize = paletteColorsCount  * 4;
+	// Size needed for this image
+	const bufferSize = HEADER_SIZE + paletteSize + Math.ceil((bitsPerPixel * width * height) / 8)
+
+	const buffer = new ArrayBuffer(bufferSize)
+	const dataView = new DataView(buffer)
+
+	// write header
+	dataView.setUint8(0, 0x42)
+	dataView.setUint8(1, 0x4D)
+	dataView.setUint16(2, 0x64, true)
+	dataView.setUint16(4, width, true)
+	dataView.setUint16(6, height, true)
+	dataView.setUint16(8, (width * bitsPerPixel) / 8, true)
+	dataView.setUint16(10, bitsPerPixel, true)
+	dataView.setUint16(12, paletteColorsCount, true)
+	// No transparent for now, will be overwritten if needed
+	dataView.setUint16(14, 0, true)
+
+	const palette = [];
+
+	// write pixel data
+	for (let i = 0; i < width * height; i++) {
+		const red = pixels[i * 4]
+		const green = pixels[i * 4 + 1]
+		const blue = pixels[i * 4 + 2]
+		const alpha = 0xFF - pixels[i * 4 + 3]
+
+		let color;
+		if (alpha == 0xFF) {
+			color = {
+				red: 0x00,
+				green: 0x00,
+				blue: 0x00,
+				alpha
+			}
+		} else if (alpha == 0x00) {
+			color = {
+				red,
+				green,
+				blue,
+				alpha
+			}
+		} else {
+			throw new ImageNotSupportedError(`Alpha cannot be other than visible or not for indexed colors images`);
+		}
+
+		// look for color in palette
+		let colorIndex = palette.findIndex(c => c.red == color.red && c.blue == color.blue && c.green == color.green && c.alpha == color.alpha);
+
+		if (colorIndex == -1) {
+			// Color not found in palette, add it
+			colorIndex = palette.length;
+			palette.push(color);
+
+
+			if (palette.length > paletteColorsCount) {
+				console.log(palette);
+				throw new ImageNotSupportedError(`Too many colors in image`);
+			}
+
+			// Write actual color in palette
+			dataView.setUint8(HEADER_SIZE + colorIndex * 4, red);
+			dataView.setUint8(HEADER_SIZE + colorIndex * 4 + 1, green);
+			dataView.setUint8(HEADER_SIZE + colorIndex * 4 + 2, blue);
+
+			if (alpha == 0xFF) {
+				// Set as transparent color
+				dataView.setUint16(14, colorIndex + 1, true)
+			}
+		}
+
+		// TODO, for now only supports 8 bit per pixel
+		dataView.setUint8(HEADER_SIZE + paletteSize + i, colorIndex);
+	}
+
+	return dataView.buffer
+}
+
+class ImageNotSupportedError extends Error {
 }
